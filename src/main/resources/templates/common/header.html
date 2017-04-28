@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en" th:fragment="head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+
+    <link href="../../static/css/jquery.dataTables.min.css"
+          th:href="@{css/jquery.dataTables.min.css}" rel="stylesheet" media="screen"/>
+
+    <link href="../../static/css/mini_springboot.css"
+          th:href="@{css/mini_springboot.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/rome/rome.css"
+          th:href="@{rome/rome.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/rome/example.css"
+          th:href="@{rome/example.css}" rel="stylesheet" media="screen"/>
+    <title>Mini SpringBoot Tutorial</title>
+</head>
+
+<body>
+
+<div th:fragment="header">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
+                <ul class="nav navbar-nav">
+                    <li><a href="#" th:href="@{/leagueteam.do}">球队列表</a></li>
+                    <li><a href="#" th:href="@{/schelist.do}">赛程列表</a></li>
+                    <li><a href="#" th:href="@{/matchlist.do}">赛事管理</a></li>
+                    <li><a href="#" th:href="@{/stadiumlist.do}">球场管理</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>
