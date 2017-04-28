@@ -29,6 +29,24 @@ public class NowMatchInfo {
     private int homeWinNum;
     private int awayWinNum;
     private int drawNum;
+    private String homeEmblems;
+    private String awayEmblems;
+
+    public String getHomeEmblems() {
+        return homeEmblems;
+    }
+
+    public void setHomeEmblems(String homeEmblems) {
+        this.homeEmblems = homeEmblems;
+    }
+
+    public String getAwayEmblems() {
+        return awayEmblems;
+    }
+
+    public void setAwayEmblems(String awayEmblems) {
+        this.awayEmblems = awayEmblems;
+    }
 
     public Long getId() {
         return id;

@@ -12,6 +12,8 @@
     <div>
         <form class="form-horizontal" th:object="${scheInfo}" th:action="@{/createSche}" method="post">
             <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" th:field="*{homeEmblems}"/>
+            <input type="hidden" th:field="*{awayEmblems}"/>
             <div class="form-group">
                 <label class="col-sm-2 control-label">home name:</label>
                 <div class="col-sm-5">
@@ -22,7 +24,7 @@
                                 th:value="${team.chineseName}"
                                 th:text="${team.chineseName}"
                                 th:selected="${#strings.equals(team.chineseName,scheInfo.homeTeam) ? 'selected' : ''}"
-                                th:attr="stadium=${team.stadiumName}">aa
+                                th:attr="stadium=${team.stadiumName},homeEmblems=${team.emblems}">aa
                         </option>
                     </select>
                 </div>
@@ -37,7 +39,7 @@
                                 th:value="${team.chineseName}"
                                 th:selected="${#strings.equals(team.chineseName,scheInfo.awayTeam) ? 'selected' : ''}"
                                 th:text="${team.chineseName}"
-                                th:attr="stadium=#{team.stadium}">aa
+                                th:attr="stadium=#{team.stadium},awayEmblems=${team.emblems}">aa
                         </option>
                     </select>
                 </div>
@@ -113,6 +115,10 @@
 <script language="JavaScript">
     $("#homeTeam").change(function () {
         $("#stadiumName").val($(this).find("option:selected").attr("stadium"));
+        $("#homeEmblems").val($(this).find("option:selected").attr("homeEmblems"));
+    });
+    $("#awayTeam").change(function () {
+        $("#awayEmblems").val($(this).find("option:selected").attr("awayEmblems"));
     });
     $(function () {
         $('#datetimepicker2').datetimepicker({format: 'yyyy-mm-dd hh:ii'});

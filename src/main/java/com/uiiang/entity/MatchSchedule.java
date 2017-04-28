@@ -20,10 +20,28 @@ public class MatchSchedule {
     private String matchLevel;
     private String homeTeam;
     private String awayTeam;
+    private String homeEmblems;
+    private String awayEmblems;
     private String stadiumName;
     private int homeResult;
     private int awayResult;
     private int status;//0,未开始, 1,进行中 2,已结束
+
+    public String getHomeEmblems() {
+        return homeEmblems;
+    }
+
+    public void setHomeEmblems(String homeEmblems) {
+        this.homeEmblems = homeEmblems;
+    }
+
+    public String getAwayEmblems() {
+        return awayEmblems;
+    }
+
+    public void setAwayEmblems(String awayEmblems) {
+        this.awayEmblems = awayEmblems;
+    }
 
     public int getStatus() {
         return status;
