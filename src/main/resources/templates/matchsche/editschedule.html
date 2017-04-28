@@ -58,6 +58,12 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-2 control-label">轮次:</label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" th:field="*{roundNum}"/>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label">stadium Name:</label>
                 <div class="col-sm-5">
                     <input type="text" class="form-control" th:field="*{stadiumName}"/>
@@ -109,17 +115,7 @@
         $("#stadiumName").val($(this).find("option:selected").attr("stadium"));
     });
     $(function () {
-        $('#datetimepicker2').datetimepicker({
-            useCurrent: false,
-            defaultDate : true,
-            viewDate:false,
-            allowInputToggle:false,
-            stepping: 15,
-            enabledHours: [15, 16, 17, 18, 19, 20],
-            sideBySide: true,
-            format: 'lll',
-            locale: 'zh-cn'
-        });
+        $('#datetimepicker2').datetimepicker({format: 'yyyy-mm-dd hh:ii'});
     });
 </script>
 </body>
