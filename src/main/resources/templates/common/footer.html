@@ -9,12 +9,6 @@
 <div th:fragment="footer">
 
     <div class="footer">国安比分竞猜, @fuliqiang, 2017</div>
-
-
-    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-
-
     <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/js/bootstrap.min.js"
             th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
 
@@ -23,10 +17,14 @@
 
     <script src="../../static/js/mini_springboot.js" th:src="@{js/mini_springboot.js}"></script>
 
-    <script src="../../static/rome/moment.js" th:src="@{rome/moment.js}" charset="utf-8"></script>
-    <script src="../../static/rome/rome.js" th:src="@{rome/rome.js}" charset="utf-8"></script>
-    <script src="../../static/rome/rome.standalone.js" th:src="@{rome/rome.standalone.js}" charset="utf-8"></script>
-    <script src="../../static/rome/example.js" th:src="@{rome/example.js}" charset="utf-8"></script>
+    <script type="text/javascript"  th:src="@{jquery/dist/jquery.min.js}"
+            src="../../static/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript"  th:src="@{moment/min/moment.min.js}"
+            src="../../static/moment/min/moment.min.js"></script>
+    <script type="text/javascript"  th:src="@{moment/min/locales.min.js}"
+            src="../../static/moment/min/locales.min.js"></script>
+    <script type="text/javascript"  th:src="@{eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js}"
+            src="../../static/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 </div>
 
 
