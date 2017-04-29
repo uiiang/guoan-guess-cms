@@ -8,14 +8,12 @@
 <th:block th:include="common/header :: header"></th:block>
 <div class="container">
 
-    <h2>编辑比赛</h2>
+    <h2>Schedule manager</h2>
     <div>
         <form class="form-horizontal" th:object="${scheInfo}" th:action="@{/createSche}" method="post">
             <input type="hidden" th:field="*{id}"/>
-            <input type="hidden" th:field="*{homeEmblems}"/>
-            <input type="hidden" th:field="*{awayEmblems}"/>
             <div class="form-group">
-                <label class="col-sm-2 control-label">主队:</label>
+                <label class="col-sm-2 control-label">home name:</label>
                 <div class="col-sm-5">
                     <select
                             th:field="${scheInfo.homeTeam}" class="form-control"
@@ -24,13 +22,13 @@
                                 th:value="${team.chineseName}"
                                 th:text="${team.chineseName}"
                                 th:selected="${#strings.equals(team.chineseName,scheInfo.homeTeam) ? 'selected' : ''}"
-                                th:attr="stadium=${team.stadiumName},homeEmblems=${team.emblems}">aa
+                                th:attr="stadium=${team.stadiumName}">aa
                         </option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">客队:</label>
+                <label class="col-sm-2 control-label">away name:</label>
                 <div class="col-sm-5">
                     <select
                             th:field="${scheInfo.awayTeam}" class="form-control"
@@ -39,13 +37,13 @@
                                 th:value="${team.chineseName}"
                                 th:selected="${#strings.equals(team.chineseName,scheInfo.awayTeam) ? 'selected' : ''}"
                                 th:text="${team.chineseName}"
-                                th:attr="stadium=#{team.stadium},awayEmblems=${team.emblems}">aa
+                                th:attr="stadium=#{team.stadium}">aa
                         </option>
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">比赛级别:</label>
+                <label class="col-sm-2 control-label">matchlevel:</label>
                 <div class="col-sm-5">
                     <select
                             th:field="${scheInfo.matchLevel}" class="form-control"
@@ -66,13 +64,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">球场名:</label>
+                <label class="col-sm-2 control-label">stadium Name:</label>
                 <div class="col-sm-5">
                     <input type="text" class="form-control" th:field="*{stadiumName}"/>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">比赛时间:</label>
+                <label class="col-sm-2 control-label">date:</label>
                 <div class="col-sm-5">
                     <div class='input-group date' id='datetimepicker2'>
                     <input th:field="*{matchDateTime}" class="form-control input"/>
@@ -83,19 +81,19 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">主队进球数:</label>
+                <label class="col-sm-2 control-label">home result:</label>
                 <div class="col-sm-5">
                     <input type="text" placeholder="0" class="form-control" th:field="*{homeResult}"/>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">客队进球数:</label>
+                <label class="col-sm-2 control-label">away result:</label>
                 <div class="col-sm-5">
                     <input type="text" placeholder="0" class="form-control" th:field="*{awayResult}"/>
                 </div>
             </div>
             <div class="row">
-                <label class="col-sm-2 control-label">状态:</label>
+                <label class="col-sm-2 control-label">status:</label>
                 <div class="row">
                     <input type="radio" th:field="*{status}" value="0">未开始</input>
                     <input type="radio" th:field="*{status}" value="1">进行中</input>
@@ -103,9 +101,9 @@
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-default">确认</button>
+                <button type="submit" class="btn btn-default">Submit</button>
                 <a th:if="${scheInfo.id>0}"
-                   href="#" th:href="${ '/deletesche?id=' + scheInfo.id}">删除这场比赛</a>
+                   href="#" th:href="${ '/deletesche?id=' + scheInfo.id}">DELETE THIS MATCH</a>
             </div>
         </form>
     </div>
@@ -115,10 +113,6 @@
 <script language="JavaScript">
     $("#homeTeam").change(function () {
         $("#stadiumName").val($(this).find("option:selected").attr("stadium"));
-        $("#homeEmblems").val($(this).find("option:selected").attr("homeEmblems"));
-    });
-    $("#awayTeam").change(function () {
-        $("#awayEmblems").val($(this).find("option:selected").attr("awayEmblems"));
     });
     $(function () {
         $('#datetimepicker2').datetimepicker({format: 'yyyy-mm-dd hh:ii'});

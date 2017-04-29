@@ -4,24 +4,21 @@
 
     <title>Spring Framework Guru</title>
 </head>
-<th:block th:include="common/header :: head"></th:block>
-
 <body>
-<th:block th:include="common/header :: header"></th:block>
 <div class="container">
 
-    <h2>编辑赛事</h2>
+    <h2>Product Details</h2>
     <div>
         <form class="form-horizontal" th:object="${matchInfo}" th:action="@{/createMatch}" method="post">
             <input type="hidden" th:field="*{id}"/>
             <div class="form-group">
-                <label class="col-sm-2 control-label">赛事中文名:</label>
+                <label class="col-sm-2 control-label">chinese name:</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" th:field="*{chineseName}"/>
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-default">确认</button>
+                <button type="submit" class="btn btn-default">Submit</button>
             </div>
         </form>
     </div>

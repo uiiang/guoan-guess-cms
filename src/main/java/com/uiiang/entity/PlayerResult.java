@@ -3,7 +3,7 @@ package com.uiiang.entity;
 /**
  * Created by fuliqiang on 2017/4/22.
  */
-public class UserResultInfo {
+public class PlayerResult {
 
     private String id;
 

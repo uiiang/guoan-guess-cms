@@ -5,23 +5,23 @@
 
 <body>
 <th:block th:include="common/header :: header"></th:block>
-<a  href="#" th:href="@{/startnewmatch}">开始一场新比赛</a>
+<a  href="#" th:href="@{/startnewmatch}">START NEW MATCH</a>
 
 <div>
-    <h2>竞猜中的比赛</h2>
+    <h2>now match list</h2>
     <table id="customersTable" class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
-            <th>主队</th>
-            <th>客队</th>
-            <th>比赛时间</th>
-            <th>比赛级别</th>
-            <th>球场</th>
-            <th>参与人数</th>
-            <th>猜赢人数</th>
-            <th>猜平人数</th>
-            <th>猜输人数</th>
+            <th>home</th>
+            <th>away</th>
+            <th>date</th>
+            <th>matchlevel</th>
+            <th>stadiumName</th>
+            <th>join</th>
+            <th>home win</th>
+            <th>draw</th>
+            <th>away win</th>
         </tr>
         </thead>
 
@@ -42,7 +42,7 @@
 
     </table>
 </div>
-<a  href="#" th:href="@{/startnewmatch}">开始一场新比赛</a>
+<a  href="#" th:href="@{/startnewmatch}">START NEW MATCH</a>
 
 <th:block th:include="common/footer :: footer"></th:block>
 </body>

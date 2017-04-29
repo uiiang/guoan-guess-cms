@@ -1,9 +1,6 @@
 package com.uiiang.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by fuliqiang on 2017/4/22.
@@ -14,12 +11,24 @@ public class GuessResult {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
-    private String userId;
-    private long submitTime;
-    private String matchId;
-    private String homeResult;
-    private String awayResult;
+    private String userId;//weixin user id
+    private long submitTime;//提交时间
+    private String homeResult;//主场进球数
+    private String awayResult;//客场进球数
+    private String resultType;//胜平负--WIN--DRAW--LOSE
     private int score;//单场个人得分
+
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="MSCHE_ID")
+    private MatchSchedule matchSchedule;
+
+    public MatchSchedule getMatchSchedule() {
+        return matchSchedule;
+    }
+
+    public void setMatchSchedule(MatchSchedule matchSchedule) {
+        this.matchSchedule = matchSchedule;
+    }
 
     public int getScore() {
         return score;
@@ -53,14 +62,6 @@ public class GuessResult {
         this.submitTime = submitTime;
     }
 
-    public String getMatchId() {
-        return matchId;
-    }
-
-    public void setMatchId(String matchId) {
-        this.matchId = matchId;
-    }
-
     public String getHomeResult() {
         return homeResult;
     }
@@ -75,5 +76,13 @@ public class GuessResult {
 
     public void setAwayResult(String awayResult) {
         this.awayResult = awayResult;
+    }
+
+    public String getResultType() {
+        return resultType;
+    }
+
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
     }
 }

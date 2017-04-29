@@ -6,15 +6,15 @@
 <body>
 <th:block th:include="common/header :: header"></th:block>
 <div>
-    <h2>球场管理</h2>
+    <h2>stadium list</h2>
     <table id="customersTable" class="table table-striped">
         <thead>
         <tr>
             <th>Id</th>
-            <th>中文名</th>
-            <th>英文名</th>
-            <th>城市</th>
-            <th>编辑</th>
+            <th>chinese_name</th>
+            <th>english name</th>
+            <th>city</th>
+            <th>edit</th>
         </tr>
         </thead>
 
@@ -31,7 +31,7 @@
     </table>
 </div>
 
-<a  href="#" th:href="@{/editstadium}">创建一个新球场</a>
+<a  href="#" th:href="@{/editstadium}">CREATE STADIUM</a>
 <th:block th:include="common/footer :: footer"></th:block>
 
 </body>

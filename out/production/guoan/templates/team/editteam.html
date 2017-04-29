@@ -7,19 +7,19 @@
 <th:block th:include="common/header :: header"></th:block>
 <div class="container">
 
-    <h2>编辑球队</h2>
+    <h2>edit team</h2>
     <div>
         <form class="form-horizontal" th:object="${leagueTeam}" th:action="@{/createTeam}" method="post">
             <input type="hidden" th:field="*{id}"/>
             <div class="form-group">
-                <label class="col-sm-2 control-label">球队中文名:</label>
-                <div class="col-sm-5">
+                <label class="col-sm-2 control-label">chinese name:</label>
+                <div class="col-sm-10">
                     <input type="text" class="form-control" th:field="*{chineseName}"/>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">城市:</label>
-                <div class="col-sm-5">
+                <label class="col-sm-2 control-label">city:</label>
+                <div class="col-sm-10">
                     <select
                             th:field="${leagueTeam.city}" class="form-control"
                             data-required="true">
@@ -32,8 +32,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">球场:</label>
-                <div class="col-sm-5">
+                <label class="col-sm-2 control-label">stadium Name:</label>
+                <div class="col-sm-10">
                     <select
                             th:field="${leagueTeam.stadiumName}" class="form-control"
                             data-required="true">
@@ -46,13 +46,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">队徽:</label>
-                <div class="col-sm-5">
+                <label class="col-sm-2 control-label">emblems:</label>
+                <div class="col-sm-10">
                     <input type="text" class="form-control" th:field="*{emblems}"/>
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-default">确认</button>
+                <button type="submit" class="btn btn-default">Submit</button>
             </div>
         </form>
     </div>
