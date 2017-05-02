@@ -5,23 +5,26 @@ import com.uiiang.entity.LeagueTeam;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @SpringBootApplication
-public class GuoanApplication {
-
-    @RequestMapping("/")
-    String home() {
-        return "Hello World!";
-    }
+@Configuration
+public class GuoanApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
+        QCloud.setupSDK();
         SpringApplication.run(GuoanApplication.class, args);
     }
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(GuoanApplication.class);
+    }
 //    @Bean
 //    public CommandLineRunner init(LeagueTeamService leagueTeamService) {
 //        return args -> {

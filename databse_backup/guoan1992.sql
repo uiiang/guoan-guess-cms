@@ -66,8 +66,34 @@ CREATE TABLE `league_team` (
 
 LOCK TABLES `league_team` WRITE;
 /*!40000 ALTER TABLE `league_team` DISABLE KEYS */;
-INSERT INTO `league_team` VALUES (1,'北京中赫国安','北京','beijingguoan.png','北京工人体育场'),(2,'广州恒大淘宝','广州','','广州天河体育场 	'),(3,'江苏苏宁','南京','','南京奥体中心'),(4,'上海上港','上海','','上海体育场'),(5,'上海绿地申花','上海','','上海虹口足球场'),(6,'广州富力','广州	','','广东省人民体育场'),(7,'河北华夏幸福','秦皇岛','','秦皇岛奥体中心'),(8,'重庆当代力帆','重庆','','重庆奥体中心'),(9,'延边富德','吉林','','延吉人民体育场'),(10,'天津亿利','天津','','天津奥体中心'),(11,'辽宁沈阳开新','沈阳','','沈阳奥体中心'),(12,'长春亚泰','长春','','长春经开体育场'),(13,'河南建业','郑州','','郑州航海体育场'),(14,'山东鲁能泰山','山东济南','','鲁能大球场'),(15,'天津权健','天津','','天津海河教育园区体育场'),(16,'贵州恒丰智诚','贵阳','','贵阳奥体中心');
+INSERT INTO `league_team` VALUES (1,'北京中赫国安','北京','beijingguoan.png','北京工人体育场'),(2,'广州恒大淘宝','广州','guangzhouhengda.png','广州天河体育场 	'),(3,'江苏苏宁','南京','jiangsusuning.png','南京奥体中心'),(4,'上海上港','上海','shanghaishanggang.png','上海体育场'),(5,'上海绿地申花','上海','shanghaishenhua.png','上海虹口足球场'),(6,'广州富力','广州	','guangzhoufuli.png','广东省人民体育场'),(7,'河北华夏幸福','秦皇岛','hebeihuaxiaxingfu.png','秦皇岛奥体中心'),(8,'重庆当代力帆','重庆','chongqinglifan.png','重庆奥体中心'),(9,'延边富德','吉林','yanbianfude.png','延吉人民体育场'),(10,'天津亿利','天津','tianjintaida.png','天津奥体中心'),(11,'辽宁沈阳开新','沈阳','liaoninghongyuan.png','沈阳奥体中心'),(12,'长春亚泰','长春','changchunyatai.png','长春经开体育场'),(13,'河南建业','郑州','henanjianye.png','郑州航海体育场'),(14,'山东鲁能泰山','山东济南','shandongluneng.png','鲁能大球场'),(15,'天津权健','天津','tianjinquanjian.png','天津海河教育园区体育场'),(16,'贵州恒丰智诚','贵阳','guizhouzhicheng.png','贵阳奥体中心');
 /*!40000 ALTER TABLE `league_team` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `league_team_match_schedules`
+--
+
+DROP TABLE IF EXISTS `league_team_match_schedules`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `league_team_match_schedules` (
+  `league_team_id` bigint(20) NOT NULL,
+  `match_schedules_id` bigint(20) NOT NULL,
+  UNIQUE KEY `UK_ovvo0mdqkx06jemdroyoinl3k` (`match_schedules_id`),
+  KEY `FK6ste8mkaog444fg7nj10rmsnw` (`league_team_id`),
+  CONSTRAINT `FK6ste8mkaog444fg7nj10rmsnw` FOREIGN KEY (`league_team_id`) REFERENCES `league_team` (`id`),
+  CONSTRAINT `FKksgro0nv1ym4fn8o9ywgogset` FOREIGN KEY (`match_schedules_id`) REFERENCES `match_schedule` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `league_team_match_schedules`
+--
+
+LOCK TABLES `league_team_match_schedules` WRITE;
+/*!40000 ALTER TABLE `league_team_match_schedules` DISABLE KEYS */;
+/*!40000 ALTER TABLE `league_team_match_schedules` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -113,6 +139,8 @@ CREATE TABLE `match_schedule` (
   `stadium_name` varchar(255) DEFAULT NULL,
   `status` int(11) NOT NULL,
   `match_date_time` datetime DEFAULT NULL,
+  `away_emblems` varchar(255) DEFAULT NULL,
+  `home_emblems` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -123,7 +151,7 @@ CREATE TABLE `match_schedule` (
 
 LOCK TABLES `match_schedule` WRITE;
 /*!40000 ALTER TABLE `match_schedule` DISABLE KEYS */;
-INSERT INTO `match_schedule` VALUES (1,1,'北京中赫国安',2,'广州恒大淘宝','2017年中超联赛',1,'广州天河体育场 	',2,'2017-03-05 19:30:00'),(2,1,'北京中赫国安',1,'贵州恒丰智诚','2017年中超联赛',2,'贵阳奥体中心',2,'2017-03-11 19:30:00'),(3,1,'上海绿地申花',2,'北京中赫国安','2017年中超联赛',3,'北京工人体育场',2,'2017-04-02 19:30:00'),(4,0,'河南建业',1,'北京中赫国安','2017年中超联赛',4,'北京工人体育场',2,'2017-04-07 19:30:00'),(5,0,'北京中赫国安',1,'山东鲁能泰山','2017年中超联赛',5,'鲁能大球场',2,'2017-04-15 19:30:00'),(6,1,'天津权健',1,'北京中赫国安','2017年中超联赛',6,'北京工人体育场',2,'2017-04-21 19:30:00'),(7,0,'北京中赫国安',0,'辽宁沈阳开新','2017年中超联赛',7,'沈阳奥体中心',0,'2017-04-29 15:30:00'),(8,0,'河北华夏幸福',0,'北京中赫国安','2017年中超联赛',8,'北京工人体育场',0,'2017-05-07 19:30:00'),(9,0,'北京中赫国安',0,'延边富德','2017年中超联赛',9,'延吉人民体育场',0,'2017-05-13 15:30:00'),(10,0,'广州富力',0,'北京中赫国安','2017年中超联赛',10,'北京工人体育场',0,'2017-05-19 18:00:00'),(11,0,'北京中赫国安',0,'上海上港','2017年中超联赛',11,'上海体育场',0,'2017-05-27 19:30:00'),(12,0,'北京中赫国安',0,'重庆当代力帆','2017年中超联赛',12,'重庆奥体中心',0,'2017-06-02 19:30:00'),(13,0,'天津亿利',0,'北京中赫国安','2017年中超联赛',13,'北京工人体育场',0,'2017-06-18 19:30:00');
+INSERT INTO `match_schedule` VALUES (1,1,'北京中赫国安',2,'广州恒大淘宝','2017年中超联赛',1,'广州天河体育场 	',2,'2017-03-05 19:30:00','beijingguoan.png','guangzhouhengda.png'),(2,1,'北京中赫国安',1,'贵州恒丰智诚','2017年中超联赛',2,'贵阳奥体中心',2,'2017-03-11 19:30:00','beijingguoan.png','guizhouzhicheng.png'),(3,1,'上海绿地申花',2,'北京中赫国安','2017年中超联赛',3,'北京工人体育场',2,'2017-04-02 19:30:00','shanghaishenhua.png','beijingguoan.png'),(4,0,'河南建业',1,'北京中赫国安','2017年中超联赛',4,'北京工人体育场',2,'2017-04-07 19:30:00','henanjianye.png','beijingguoan.png'),(5,0,'北京中赫国安',1,'山东鲁能泰山','2017年中超联赛',5,'鲁能大球场',2,'2017-04-15 19:30:00','beijingguoan.png','shandongluneng.png'),(6,1,'天津权健',1,'北京中赫国安','2017年中超联赛',6,'北京工人体育场',2,'2017-04-21 19:30:00','tianjinquanjian.png','beijingguoan.png'),(7,4,'北京中赫国安',2,'辽宁沈阳开新','2017年中超联赛',7,'沈阳奥体中心',2,'2017-04-29 15:30:00','beijingguoan.png','liaoninghongyuan.png'),(8,0,'河北华夏幸福',0,'北京中赫国安','2017年中超联赛',8,'北京工人体育场',0,'2017-05-07 19:30:00','hebeihuaxiaxingfu.png','beijingguoan.png'),(9,0,'北京中赫国安',0,'延边富德','2017年中超联赛',9,'延吉人民体育场',0,'2017-05-13 15:30:00','beijingguoan.png','yanbianfude.png'),(10,0,'广州富力',0,'北京中赫国安','2017年中超联赛',10,'北京工人体育场',0,'2017-05-19 18:00:00','guangzhoufuli.png','beijingguoan.png'),(11,0,'北京中赫国安',0,'上海上港','2017年中超联赛',11,'上海体育场',0,'2017-05-27 19:30:00','beijingguoan.png','shanghaishanggang.png'),(12,0,'北京中赫国安',0,'重庆当代力帆','2017年中超联赛',12,'重庆奥体中心',0,'2017-06-02 19:30:00','beijingguoan.png','chongqinglifan.png'),(13,0,'天津亿利',0,'北京中赫国安','2017年中超联赛',13,'北京工人体育场',0,'2017-06-18 19:30:00','tianjintaida.png','beijingguoan.png');
 /*!40000 ALTER TABLE `match_schedule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,8 +178,10 @@ CREATE TABLE `now_match_info` (
   `round_num` int(11) NOT NULL,
   `stadium_name` varchar(255) DEFAULT NULL,
   `status` int(11) NOT NULL,
+  `away_emblems` varchar(255) DEFAULT NULL,
+  `home_emblems` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +190,7 @@ CREATE TABLE `now_match_info` (
 
 LOCK TABLES `now_match_info` WRITE;
 /*!40000 ALTER TABLE `now_match_info` DISABLE KEYS */;
-INSERT INTO `now_match_info` VALUES (1,0,'北京中赫国安',0,0,0,'辽宁沈阳开新',0,0,'2017-04-29 15:30:00',7,'2017年中超联赛',0,'沈阳奥体中心',0);
+INSERT INTO `now_match_info` VALUES (6,0,'河北华夏幸福',0,0,0,'北京中赫国安',0,0,'2017-05-07 19:30:00',8,'2017年中超联赛',8,'北京工人体育场',0,'hebeihuaxiaxingfu.png','beijingguoan.png');
 /*!40000 ALTER TABLE `now_match_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,4 +229,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-28 11:46:15
+-- Dump completed on 2017-04-30 10:31:35
