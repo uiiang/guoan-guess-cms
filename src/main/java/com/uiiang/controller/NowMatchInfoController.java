@@ -1,15 +1,16 @@
 package com.uiiang.controller;
 
+import com.uiiang.biz.GuessResultService;
 import com.uiiang.biz.MatchScheduleService;
 import com.uiiang.biz.NowMatchInfoService;
+import com.uiiang.entity.GuessResult;
 import com.uiiang.entity.MatchSchedule;
 import com.uiiang.entity.NowMatchInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -19,13 +20,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class NowMatchInfoController {
     private NowMatchInfoService nowMatchInfoService;
     private MatchScheduleService matchScheduleService;
+    private GuessResultService guessResultService;
 
     public NowMatchInfoController(NowMatchInfoService nowMatchInfoService
-            , MatchScheduleService matchScheduleService) {
+            , MatchScheduleService matchScheduleService
+            , GuessResultService guessResultService) {
         this.nowMatchInfoService = nowMatchInfoService;
         this.matchScheduleService = matchScheduleService;
+        this.guessResultService = guessResultService;
     }
-
 
     @GetMapping("/nowmatch")
     @ResponseBody
@@ -39,22 +42,12 @@ public class NowMatchInfoController {
         nowMatchInfoService.deleteAll();
         MatchSchedule nextMatch = matchScheduleService.findTopByStatusLessThanOrderByMatchDateTimeAsc(1);
         NowMatchInfo nowMatchInfo = new NowMatchInfo();
-        nowMatchInfo.setAwayResult(0);
-        nowMatchInfo.setAwayTeam(nextMatch.getAwayTeam());
         nowMatchInfo.setAwayWinNum(0);
-        nowMatchInfo.setMatchDateTime(nextMatch.getMatchDateTime());
         nowMatchInfo.setDrawNum(0);
-        nowMatchInfo.setHomeResult(0);
-        nowMatchInfo.setHomeTeam(nextMatch.getHomeTeam());
         nowMatchInfo.setHomeWinNum(0);
         nowMatchInfo.setJoinNum(0);
-        nowMatchInfo.setMatchDbId(nextMatch.getId());
-        nowMatchInfo.setStadiumName(nextMatch.getStadiumName());
-        nowMatchInfo.setMatchLevel(nextMatch.getMatchLevel());
         nowMatchInfo.setStatus(0);
-        nowMatchInfo.setRoundNum(nextMatch.getRoundNum());
-        nowMatchInfo.setHomeEmblems(nextMatch.getHomeEmblems());
-        nowMatchInfo.setAwayEmblems(nextMatch.getAwayEmblems());
+        nowMatchInfo.setMatchSchedule(nextMatch);
         nowMatchInfoService.save(nowMatchInfo);
         return "redirect:/";
     }
@@ -65,6 +58,22 @@ public class NowMatchInfoController {
         Iterable<NowMatchInfo> all = nowMatchInfoService.findAll();
         model.addAttribute("nowmatchlist", all);
         return "index";
+    }
+
+
+    @RequestMapping(value = "/countMatchResult", method = RequestMethod.GET)
+    public String countMatchResult(@RequestParam(value = "id", required = false) Long id){
+        NowMatchInfo nowMatchInfo = nowMatchInfoService.findOne(id);
+
+        Long winSum = guessResultService.countByMatchScheduleAndResultType(nowMatchInfo.getMatchSchedule(), GuessResultController.WIN);
+        Long loseSum = guessResultService.countByMatchScheduleAndResultType(nowMatchInfo.getMatchSchedule(), GuessResultController.LOSE);
+        Long drawSum = guessResultService.countByMatchScheduleAndResultType(nowMatchInfo.getMatchSchedule(), GuessResultController.DRAW);
+
+        nowMatchInfo.setHomeWinNum(winSum.intValue());
+        nowMatchInfo.setAwayWinNum(loseSum.intValue());
+        nowMatchInfo.setDrawNum(drawSum.intValue());
+        nowMatchInfoService.save(nowMatchInfo);
+        return "redirect:/";
     }
 
 }

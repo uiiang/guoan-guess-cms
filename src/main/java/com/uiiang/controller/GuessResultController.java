@@ -17,6 +17,9 @@ import java.util.Date;
  */
 @Controller
 public class GuessResultController {
+    public static final String WIN = "WIN";
+    public static final String LOSE = "LOSE";
+    public static final String DRAW = "DRAW";
     private GuessResultService guessResultService;
     private MatchScheduleService matchScheduleService;
     private PlayerInfoService playerInfoService;
@@ -42,11 +45,11 @@ public class GuessResultController {
         int homeR = guessResult.getHomeResult();
         int awayR = guessResult.getAwayResult();
         if (homeR > awayR){
-            guessResult.setResultType("WIN");
+            guessResult.setResultType(WIN);
         } else if (homeR < awayR) {
-            guessResult.setResultType("LOSE");
+            guessResult.setResultType(LOSE);
         } else {
-            guessResult.setResultType("DRAW");
+            guessResult.setResultType(DRAW);
         }
         guessResultService.save(guessResult);
         return "redirect:guess.do";
