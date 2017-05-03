@@ -1,5 +1,9 @@
 package com.uiiang.controller;
 
+import com.qcloud.weapp.ConfigurationException;
+import com.qcloud.weapp.authorization.LoginService;
+import com.qcloud.weapp.authorization.LoginServiceException;
+import com.qcloud.weapp.authorization.UserInfo;
 import com.uiiang.biz.GuessResultService;
 import com.uiiang.biz.MatchScheduleService;
 import com.uiiang.biz.PlayerInfoService;
@@ -10,7 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by fuliqiang on 2017/5/3.
@@ -39,20 +46,77 @@ public class GuessResultController {
         return "guess/guesslist";
     }
 
-    @RequestMapping(value = "/createGuess", method = RequestMethod.POST)
-    public String saveMatch(@ModelAttribute GuessResult guessResult, Model model) {
-        guessResult.setSubmitTime(new Date());
-        int homeR = guessResult.getHomeResult();
-        int awayR = guessResult.getAwayResult();
-        if (homeR > awayR){
-            guessResult.setResultType(WIN);
-        } else if (homeR < awayR) {
-            guessResult.setResultType(LOSE);
-        } else {
-            guessResult.setResultType(DRAW);
+    @RequestMapping(value = "/submitguess", method = RequestMethod.POST)
+    @ResponseBody
+    public void submitGuess(@RequestParam(value = "m") String matchid
+            , @RequestParam(value = "h") String homegoal
+            , @RequestParam(value = "a") String awaygoal
+            , HttpServletRequest request, HttpServletResponse response) {
+        System.out.println(matchid + "  " + homegoal + "  " + awaygoal);
+        LoginService service = new LoginService(request, response);
+        UserInfo userInfo = null;
+        // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
+        try {
+            userInfo = service.check();
+        } catch (LoginServiceException e) {
+            e.printStackTrace();
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
         }
+
+        if (userInfo != null) {
+            PlayerInfo playerInfo = new PlayerInfo();
+            playerInfo.setOpenId(userInfo.getOpenId());
+
+            MatchSchedule matchSchedule = new MatchSchedule();
+            matchSchedule.setId(Long.valueOf(matchid));
+            GuessResult guessResult = new GuessResult();
+
+            List<GuessResult> tmpGuessResultList = guessResultService.findByPlayerInfoAndMatchSchedule(playerInfo
+                    , matchSchedule);
+            if (tmpGuessResultList != null && tmpGuessResultList.size() > 0) {
+                guessResult = tmpGuessResultList.get(0);
+            } else {
+                guessResult.setMatchSchedule(matchSchedule);
+                guessResult.setPlayerInfo(playerInfo);
+            }
+
+            guessResult.setSubmitTime(new Date());
+            guessResult.setHomeResult(Integer.valueOf(homegoal));
+            guessResult.setAwayResult(Integer.valueOf(awaygoal));
+            String resultType = getResultType(guessResult);
+            guessResult.setResultType(resultType);
+            guessResultService.save(guessResult);
+        }
+    }
+
+    @RequestMapping(value = "/createGuess", method = RequestMethod.POST)
+    public String saveMatchGuess(@ModelAttribute GuessResult guessResult, Model model) {
+        List<GuessResult> tmpGuessResultList = guessResultService.findByPlayerInfoAndMatchSchedule(guessResult.getPlayerInfo()
+                , guessResult.getMatchSchedule());
+
+        if (tmpGuessResultList != null && tmpGuessResultList.size() > 0) {
+            guessResult.setId(tmpGuessResultList.get(0).getId());
+        }
+        guessResult.setSubmitTime(new Date());
+        String resultType = getResultType(guessResult);
+        guessResult.setResultType(resultType);
         guessResultService.save(guessResult);
         return "redirect:guess.do";
+    }
+
+    private String getResultType(@ModelAttribute GuessResult guessResult) {
+        int homeR = guessResult.getHomeResult();
+        int awayR = guessResult.getAwayResult();
+        String resultType = WIN;
+        if (homeR > awayR) {
+            resultType = WIN;
+        } else if (homeR < awayR) {
+            resultType = LOSE;
+        } else {
+            resultType = DRAW;
+        }
+        return resultType;
     }
 
     @GetMapping("/editguess")
@@ -68,4 +132,9 @@ public class GuessResultController {
         model.addAttribute("guessResult", guessResult);
         return "guess/editguess";
     }
+
+//    SELECT guess_result.away_result,guess_result.home_result , count(id)
+//    FROM guoan1992.guess_result
+//    group by guess_result.away_result, guess_result.home_result
+//    order by count(id) desc;
 }
