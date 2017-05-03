@@ -10,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface MatchScheduleService extends CrudRepository<MatchSchedule, Long> {
     Iterable<MatchSchedule> findByRoundNum(int round);
+    Iterable<MatchSchedule> findByStatusEquals(int status);
 
     //查找一下场竞猜比赛,
     //查找未结束比赛并时间最接近的比赛

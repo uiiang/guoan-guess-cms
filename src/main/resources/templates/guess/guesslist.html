@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="common/header :: head"></th:block>
+
+<body>
+<th:block th:include="common/header :: header"></th:block>
+<div>
+    <h2>竞猜管理</h2>
+
+    <a href="#" th:href="@{/editguess}">创建新竞猜</a>
+    <table id="customersTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>编辑</th>
+            <th>Id</th>
+            <th>主队</th>
+            <th>客队</th>
+            <th>比赛时间</th>
+            <th>比赛级别</th>
+            <th>轮次</th>
+            <th>预测结果</th>
+            <th>玩家</th>
+            <th>编辑</th>
+        </tr>
+        </thead>
+
+        <tbody th:if="${not #lists.isEmpty(guesslist)}">
+        <tr th:each="gues : ${guesslist}">
+            <td><a href="#" th:href="${ '/editguess?id=' + gues.id}">edit</a></td>
+            <td th:text="${gues.id}">Id</td>
+            <td th:text="${gues.matchSchedule.homeTeam}">homeTeam</td>
+            <td th:text="${gues.matchSchedule.awayTeam}">awayTeam</td>
+            <td th:text="${#calendars.format(gues.matchSchedule.matchDateTime,'yyyy-MM-dd HH:mm')}">matchDateTime</td>
+            <td th:text="${gues.matchSchedule.matchLevel}">matchLevel</td>
+            <td th:text="${gues.matchSchedule.roundNum}">roundNum</td>
+            <td th:text="${gues.homeResult + ' : ' + gues.awayResult}">Result</td>
+            <td th:text="${gues.playerInfo.nickName}">roundNum</td>
+            <td><a href="#" th:href="${ '/editguess?id=' + gues.id}">edit</a></td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+<a href="#" th:href="@{/editguess}">创建新竞猜</a>
+<th:block th:include="common/footer :: footer"></th:block>
+
+</body>
+</html>

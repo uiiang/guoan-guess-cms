@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+</head>
+<th:block th:include="common/header :: head"></th:block>
+
+<body>
+<th:block th:include="common/header :: header"></th:block>
+<div class="container">
+
+    <h2>编辑竞猜</h2>
+    <div>
+        <form class="form-horizontal" th:object="${guessResult}" th:action="@{/createGuess}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">选择比赛:</label>
+                <div class="col-sm-5">
+                    <select
+                            th:field="${guessResult.matchSchedule}" class="form-control"
+                            data-required="true" th:if="${guessResult.matchSchedule == null}">
+                        <option th:each="masch : ${matchSchedules}"
+                                th:value="${masch.id}"
+                                th:text="${'第'+masch.roundNum + '轮' + masch.homeTeam + ' - ' + masch.awayTeam}">aa
+                        </option>
+                    </select>
+                    <input type="hidden" th:if="${guessResult.matchSchedule != null}" th:field="${guessResult.matchSchedule}"/>
+                    <label class="col-sm-10 control-label"  th:if="${guessResult.matchSchedule != null}"
+                           th:text="${guessResult.matchSchedule.homeTeam + ' - ' + guessResult.matchSchedule.awayTeam}"></label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">玩家:</label>
+                <div class="col-sm-5">
+                    <select
+                            th:field="${guessResult.playerInfo}" class="form-control"
+                            data-required="true" th:if="${guessResult.playerInfo == null}">
+                        <option th:each="player : ${playerInfos}"
+                                th:value="${player.openId}"
+                                th:text="${player.nickName}">aa
+                        </option>
+                    </select>
+                    <input type="hidden" th:if="${guessResult.playerInfo != null}" th:field="${guessResult.playerInfo}"/>
+                    <label class="col-sm-5 control-label" th:if="${guessResult.playerInfo != null}"
+                           th:text="${guessResult.playerInfo.nickName}"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">猜比分:</label>
+                <div class="col-sm-2">
+                    <input type="text"
+                           onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"
+                           class="form-control" th:field="*{homeResult}"/>
+                </div>
+                <div class="col-sm-2">
+                    <input type="text"
+                           onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"
+                           class="form-control" th:field="*{awayResult}"/>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-default">确认</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

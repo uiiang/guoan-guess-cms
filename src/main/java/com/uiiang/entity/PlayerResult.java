@@ -1,36 +1,63 @@
 package com.uiiang.entity;
 
+import javax.persistence.*;
+
 /**
  * Created by fuliqiang on 2017/4/22.
  */
+@Entity
 public class PlayerResult {
 
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "PLAYER_ID")
+    private PlayerInfo playerInfo;
 
-    public String getId() {
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "MATCH_ID")
+    private MatchInfo matchLevel;
+    private int joinNum;
+    private int totalScore;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getTotal() {
-        return total;
+    public PlayerInfo getPlayerInfo() {
+        return playerInfo;
     }
 
-    public void setTotal(int total) {
-        this.total = total;
+    public void setPlayerInfo(PlayerInfo playerInfo) {
+        this.playerInfo = playerInfo;
     }
 
-    public int getYears() {
-        return years;
+    public MatchInfo getMatchLevel() {
+        return matchLevel;
     }
 
-    public void setYears(int years) {
-        this.years = years;
+    public void setMatchLevel(MatchInfo matchLevel) {
+        this.matchLevel = matchLevel;
     }
 
-    private int total;
-    private int years;
+    public int getJoinNum() {
+        return joinNum;
+    }
+
+    public void setJoinNum(int joinNum) {
+        this.joinNum = joinNum;
+    }
+
+    public int getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
 }

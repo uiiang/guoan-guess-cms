@@ -1,6 +1,9 @@
 package com.uiiang.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by fuliqiang on 2017/4/22.
@@ -11,16 +14,32 @@ public class GuessResult {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
-    private String userId;//weixin user id
-    private long submitTime;//提交时间
-    private String homeResult;//主场进球数
-    private String awayResult;//客场进球数
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date submitTime;//提交时间
+    private int homeResult;//主场进球数
+    private int awayResult;//客场进球数
     private String resultType;//胜平负--WIN--DRAW--LOSE
     private int score;//单场个人得分
 
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="MSCHE_ID")
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "PLAYER_ID")
+    private PlayerInfo playerInfo;
+
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "MSCHE_ID")
     private MatchSchedule matchSchedule;
+
+
+    public PlayerInfo getPlayerInfo() {
+        return playerInfo;
+    }
+
+    public void setPlayerInfo(PlayerInfo playerInfo) {
+        this.playerInfo = playerInfo;
+    }
+
 
     public MatchSchedule getMatchSchedule() {
         return matchSchedule;
@@ -46,35 +65,27 @@ public class GuessResult {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public long getSubmitTime() {
+    public Date getSubmitTime() {
         return submitTime;
     }
 
-    public void setSubmitTime(long submitTime) {
+    public void setSubmitTime(Date submitTime) {
         this.submitTime = submitTime;
     }
 
-    public String getHomeResult() {
+    public int getHomeResult() {
         return homeResult;
     }
 
-    public void setHomeResult(String homeResult) {
+    public void setHomeResult(int homeResult) {
         this.homeResult = homeResult;
     }
 
-    public String getAwayResult() {
+    public int getAwayResult() {
         return awayResult;
     }
 
-    public void setAwayResult(String awayResult) {
+    public void setAwayResult(int awayResult) {
         this.awayResult = awayResult;
     }
 
