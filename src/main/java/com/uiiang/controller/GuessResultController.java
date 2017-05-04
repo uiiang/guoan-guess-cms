@@ -7,9 +7,9 @@ import com.qcloud.weapp.authorization.UserInfo;
 import com.uiiang.biz.GuessResultService;
 import com.uiiang.biz.MatchScheduleService;
 import com.uiiang.biz.PlayerInfoService;
-import com.uiiang.entity.GuessResult;
-import com.uiiang.entity.MatchSchedule;
-import com.uiiang.entity.PlayerInfo;
+import com.uiiang.entity.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +43,22 @@ public class GuessResultController {
     public String listAll(Model model) {
         Iterable<GuessResult> all = guessResultService.findAll();
         model.addAttribute("guesslist", all);
+
         return "guess/guesslist";
+    }
+
+    @GetMapping("/guesspre")
+    @ResponseBody
+    public GuessResultPreview listGuessPreview(@RequestParam(value = "id", required = false) Long id) {
+        GuessResultPreview guessResultPreview = new GuessResultPreview();
+        List<GuessResultPreviewObj> allLimit5Win = guessResultService.findAllLimit5(WIN, id);
+        List<GuessResultPreviewObj> allLimit5Draw = guessResultService.findAllLimit5(DRAW, id);
+        List<GuessResultPreviewObj> allLimit5Lose = guessResultService.findAllLimit5(LOSE, id);
+
+        guessResultPreview.setHomeWin(allLimit5Win);
+        guessResultPreview.setHomeLose(allLimit5Lose);
+        guessResultPreview.setDraw(allLimit5Draw);
+        return guessResultPreview;
     }
 
     @RequestMapping(value = "/submitguess", method = RequestMethod.POST)
@@ -58,9 +73,7 @@ public class GuessResultController {
         // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
         try {
             userInfo = service.check();
-        } catch (LoginServiceException e) {
-            e.printStackTrace();
-        } catch (ConfigurationException e) {
+        } catch (LoginServiceException | ConfigurationException e) {
             e.printStackTrace();
         }
 
@@ -87,6 +100,8 @@ public class GuessResultController {
             String resultType = getResultType(guessResult);
             guessResult.setResultType(resultType);
             guessResultService.save(guessResult);
+        } else {
+            //TODO
         }
     }
 
