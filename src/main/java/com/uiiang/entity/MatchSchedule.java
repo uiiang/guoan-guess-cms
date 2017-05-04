@@ -25,7 +25,16 @@ public class MatchSchedule {
     private String stadiumName;
     private int homeResult;
     private int awayResult;
-    private int status;//0,未开始, 1,进行中 2,已结束
+    private String resultType;
+    private int status;//0,未开始, 1,进行中 2,已结束  3,已计算
+
+    public String getResultType() {
+        return resultType;
+    }
+
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
+    }
 
     public String getHomeEmblems() {
         return homeEmblems;

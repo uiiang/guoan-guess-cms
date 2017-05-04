@@ -1,23 +1,21 @@
 package com.qcloud.weapp.tunnel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.qcloud.weapp.ConfigurationException;
 import com.qcloud.weapp.ConfigurationManager;
 import com.qcloud.weapp.Hash;
 import com.qcloud.weapp.authorization.LoginService;
 import com.qcloud.weapp.authorization.LoginServiceException;
 import com.qcloud.weapp.authorization.UserInfo;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 
 /**

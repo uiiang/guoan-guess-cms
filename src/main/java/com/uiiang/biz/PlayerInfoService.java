@@ -1,7 +1,6 @@
 package com.uiiang.biz;
 
 import com.uiiang.entity.PlayerInfo;
-import com.uiiang.entity.StadiumInfo;
 import org.springframework.data.repository.CrudRepository;
 
 /**

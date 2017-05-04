@@ -1,9 +1,6 @@
 package com.uiiang.biz;
 
-import com.uiiang.entity.GuessResult;
-import com.uiiang.entity.GuessResultPreviewObj;
-import com.uiiang.entity.MatchSchedule;
-import com.uiiang.entity.PlayerInfo;
+import com.uiiang.entity.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -22,6 +19,7 @@ public interface GuessResultService extends CrudRepository<GuessResult, Long> {
 
     long countByMatchScheduleAndResultType(MatchSchedule matchSchedule, String resultType);
 
+    long countByPlayerInfoAndMatchInfo(PlayerInfo playerInfo, MatchInfo matchInfo);
 
     @Query ("SELECT new com.uiiang.entity.GuessResultPreviewObj(homeResult ,awayResult, count(id)) FROM GuessResult where resultType=:resultType and MSCHE_ID=:matchId group by homeResult, awayResult order by  count(id) desc, homeResult desc")
     List<GuessResultPreviewObj> findAllLimit5(@Param("resultType") String resultType, @Param("matchId") Long matchId);

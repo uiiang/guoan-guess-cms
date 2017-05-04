@@ -17,7 +17,7 @@ public class PlayerResult {
 
     @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "MATCH_ID")
-    private MatchInfo matchLevel;
+    private MatchInfo matchInfo;
     private int joinNum;
     private int totalScore;
 
@@ -37,12 +37,12 @@ public class PlayerResult {
         this.playerInfo = playerInfo;
     }
 
-    public MatchInfo getMatchLevel() {
-        return matchLevel;
+    public MatchInfo getMatchInfo() {
+        return matchInfo;
     }
 
-    public void setMatchLevel(MatchInfo matchLevel) {
-        this.matchLevel = matchLevel;
+    public void setMatchInfo(MatchInfo matchInfo) {
+        this.matchInfo = matchInfo;
     }
 
     public int getJoinNum() {

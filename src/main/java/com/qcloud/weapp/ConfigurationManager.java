@@ -1,11 +1,11 @@
 package com.qcloud.weapp;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * 配置管理，使用该类进行 SDK 配置

@@ -5,11 +5,10 @@ import com.qcloud.weapp.authorization.LoginService;
 import com.qcloud.weapp.authorization.LoginServiceException;
 import com.qcloud.weapp.authorization.UserInfo;
 import com.uiiang.biz.GuessResultService;
+import com.uiiang.biz.MatchInfoService;
 import com.uiiang.biz.MatchScheduleService;
 import com.uiiang.biz.PlayerInfoService;
 import com.uiiang.entity.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +29,13 @@ public class GuessResultController {
     private GuessResultService guessResultService;
     private MatchScheduleService matchScheduleService;
     private PlayerInfoService playerInfoService;
+    private MatchInfoService matchInfoService;
 
-    public GuessResultController(GuessResultService guessResultService
-            , MatchScheduleService matchScheduleService
-            , PlayerInfoService playerInfoService) {
+    public GuessResultController(GuessResultService guessResultService, MatchScheduleService matchScheduleService, PlayerInfoService playerInfoService, MatchInfoService matchInfoService) {
         this.guessResultService = guessResultService;
         this.matchScheduleService = matchScheduleService;
         this.playerInfoService = playerInfoService;
+        this.matchInfoService = matchInfoService;
     }
 
     @GetMapping("/guess.do")
@@ -81,8 +80,8 @@ public class GuessResultController {
             PlayerInfo playerInfo = new PlayerInfo();
             playerInfo.setOpenId(userInfo.getOpenId());
 
-            MatchSchedule matchSchedule = new MatchSchedule();
-            matchSchedule.setId(Long.valueOf(matchid));
+            MatchSchedule matchSchedule = matchScheduleService.findOne(Long.valueOf(matchid));
+            List<MatchInfo> matchInfos = matchInfoService.findByChineseName(matchSchedule.getMatchLevel());
             GuessResult guessResult = new GuessResult();
 
             List<GuessResult> tmpGuessResultList = guessResultService.findByPlayerInfoAndMatchSchedule(playerInfo
@@ -93,7 +92,7 @@ public class GuessResultController {
                 guessResult.setMatchSchedule(matchSchedule);
                 guessResult.setPlayerInfo(playerInfo);
             }
-
+            guessResult.setMatchInfo(matchInfos.get(0));
             guessResult.setSubmitTime(new Date());
             guessResult.setHomeResult(Integer.valueOf(homegoal));
             guessResult.setAwayResult(Integer.valueOf(awaygoal));
@@ -113,6 +112,8 @@ public class GuessResultController {
         if (tmpGuessResultList != null && tmpGuessResultList.size() > 0) {
             guessResult.setId(tmpGuessResultList.get(0).getId());
         }
+        List<MatchInfo> matchInfos = matchInfoService.findByChineseName(guessResult.getMatchSchedule().getMatchLevel());
+        guessResult.setMatchInfo(matchInfos.get(0));
         guessResult.setSubmitTime(new Date());
         String resultType = getResultType(guessResult);
         guessResult.setResultType(resultType);

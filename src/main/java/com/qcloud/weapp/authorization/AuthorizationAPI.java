@@ -1,15 +1,14 @@
 package com.qcloud.weapp.authorization;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.qcloud.weapp.ConfigurationException;
 import com.qcloud.weapp.ConfigurationManager;
 import com.qcloud.weapp.HttpRequest;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 class AuthorizationAPI {
 		

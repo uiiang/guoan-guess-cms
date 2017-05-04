@@ -1,9 +1,6 @@
 package com.uiiang.entity;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * Created by fuliqiang on 2017/4/27.

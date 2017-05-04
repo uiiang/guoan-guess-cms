@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:include="common/header :: head"></th:block>
+
+<body>
+<th:block th:include="common/header :: header"></th:block>
+<div>
+    <h2>竞猜管理</h2>
+    <div th:if="${not #lists.isEmpty(matchlist)}">
+        <input type="checkbox" th:each="match : ${matchlist}" th:text="${match.chineseName}"/>
+    </div>
+    <table id="customersTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>玩家</th>
+            <th>参与次数</th>
+            <th>总分</th>
+        </tr>
+        </thead>
+
+        <tbody th:if="${not #lists.isEmpty(playerResultList)}">
+        <tr th:each="result : ${playerResultList}">
+            <td>Id</td>
+            <td th:text="${result.playerInfo.nickName}">nickName</td>
+            <td th:text="${result.joinNum}">joinNum</td>
+            <td th:text="${result.totalScore}">totalScore</td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+<th:block th:include="common/footer :: footer"></th:block>
+
+</body>
+</html>

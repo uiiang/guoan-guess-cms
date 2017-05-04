@@ -13,7 +13,7 @@
             <th>Id</th>
             <th>赛事名称</th>
             <th>状态</th>
-            <th>状态</th>
+            <th>操作</th>
         </tr>
         </thead>
 
@@ -21,8 +21,12 @@
         <tr th:each="match : ${matchlist}">
             <td th:text="${match.id}">Id</td>
             <td th:text="${match.chineseName}">中文名</td>
-            <td th:text="${match.status}">status</td>
-            <td><a href="#" th:href="${ '/editmatch?id=' + match.id}">edit</a></td>
+            <td th:text="未开始" th:if="${match.status==0}">未开始</td>
+            <td th:text="进行中" th:if="${match.status==1}">进行中</td>
+            <td th:text="已结束" th:if="${match.status==2}">已结束</td>
+            <td><a href="#" th:href="${ '/editmatch?id=' + match.id}">edit</a>
+                <a href="#" th:href="${'/countresult?mainfoid=' + match.id}">计算</a></td>
+
         </tr>
         </tbody>
 

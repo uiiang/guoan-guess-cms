@@ -1,6 +1,5 @@
 package com.uiiang.biz;
 
-import com.uiiang.entity.MatchInfo;
 import com.uiiang.entity.StadiumInfo;
 import org.springframework.data.repository.CrudRepository;
 

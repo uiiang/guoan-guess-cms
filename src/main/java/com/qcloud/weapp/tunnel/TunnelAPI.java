@@ -1,15 +1,14 @@
 package com.qcloud.weapp.tunnel;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.qcloud.weapp.ConfigurationException;
 import com.qcloud.weapp.ConfigurationManager;
 import com.qcloud.weapp.Hash;
 import com.qcloud.weapp.HttpRequest;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 class TunnelAPI {
 	private String getTunnelServerUrl() throws ConfigurationException {

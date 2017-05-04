@@ -31,6 +31,17 @@ public class GuessResult {
     @JoinColumn(name = "MSCHE_ID")
     private MatchSchedule matchSchedule;
 
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "MATCH_ID")
+    private MatchInfo matchInfo;
+
+    public MatchInfo getMatchInfo() {
+        return matchInfo;
+    }
+
+    public void setMatchInfo(MatchInfo matchInfo) {
+        this.matchInfo = matchInfo;
+    }
 
     public PlayerInfo getPlayerInfo() {
         return playerInfo;

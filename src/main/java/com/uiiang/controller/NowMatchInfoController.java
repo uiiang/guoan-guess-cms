@@ -3,14 +3,11 @@ package com.uiiang.controller;
 import com.uiiang.biz.GuessResultService;
 import com.uiiang.biz.MatchScheduleService;
 import com.uiiang.biz.NowMatchInfoService;
-import com.uiiang.entity.GuessResult;
 import com.uiiang.entity.MatchSchedule;
 import com.uiiang.entity.NowMatchInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**

@@ -1,14 +1,12 @@
 package com.qcloud.weapp.authorization;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.qcloud.weapp.ConfigurationException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.qcloud.weapp.ConfigurationException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 提供登录服务

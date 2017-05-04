@@ -1,8 +1,6 @@
 package com.uiiang.controller;
 
-import com.uiiang.biz.MatchInfoService;
 import com.uiiang.biz.StadiumInfoService;
-import com.uiiang.entity.MatchInfo;
 import com.uiiang.entity.StadiumInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

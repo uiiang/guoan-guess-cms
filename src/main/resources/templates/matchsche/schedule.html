@@ -18,8 +18,8 @@
             <th>客队</th>
             <th>比赛时间</th>
             <th>比赛级别</th>
-            <th>轮次</th>
             <th>主场球场</th>
+            <th>轮次</th>
             <th>结果</th>
             <th>比赛状态</th>
             <th>编辑</th>
@@ -33,14 +33,15 @@
             <td th:text="${sche.homeTeam}">homeTeam</td>
             <td th:text="${sche.awayTeam}">awayTeam</td>
             <td th:text="${#calendars.format(sche.matchDateTime,'yyyy-MM-dd HH:mm')}">matchDateTime</td>
-            <td th:text="${sche.matchLevel}">matchLevel</td>
+            <td th:text="${sche.matchLevel}">matchInfo</td>
             <td th:text="${sche.stadiumName}">stadiumName</td>
             <td th:text="${sche.roundNum}">roundNum</td>
             <td th:text="${sche.homeResult + ' : ' + sche.awayResult}" th:if="${sche.status==2}">Result</td>
             <td th:if="${sche.status!=2}">- : -</td>
             <td th:text="未开始" th:if="${sche.status==0}">未开始</td>
             <td th:text="进行中" th:if="${sche.status==1}">进行中</td>
-            <td th:text="已结束" th:if="${sche.status==2}">已结束</td>
+            <td th:text="已结束" th:if="${sche.status==2}">比赛结束,未计算</td>
+            <td th:text="已结束" th:if="${sche.status==3}">已计算</td>
             <td><a href="#" th:href="${ '/editsche?id=' + sche.id}">edit</a></td>
         </tr>
         </tbody>

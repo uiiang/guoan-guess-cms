@@ -10,10 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by fuliqiang on 2017/4/26.
  */
@@ -40,6 +36,7 @@ public class MatchScheduleController {
 
     @RequestMapping(value = "/createSche", method = RequestMethod.POST)
     public String saveMatch(@ModelAttribute MatchSchedule matchSchedule, Model model) {
+        matchSchedule.setResultType(getResultType(matchSchedule.getHomeResult(), matchSchedule.getAwayResult()));
         service.save(matchSchedule);
         return "redirect:schelist.do";
     }
@@ -77,4 +74,18 @@ public class MatchScheduleController {
         model.addAttribute("nextmatch", nextMatch);
         return "";
     }
+
+
+    private String getResultType(int homeResult, int awayResult) {
+        String resultType = GuessResultController.WIN;
+        if (homeResult > awayResult) {
+            resultType = GuessResultController.WIN;
+        } else if (homeResult < awayResult) {
+            resultType = GuessResultController.LOSE;
+        } else {
+            resultType = GuessResultController.DRAW;
+        }
+        return resultType;
+    }
+
 }
