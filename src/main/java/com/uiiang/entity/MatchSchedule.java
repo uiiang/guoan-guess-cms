@@ -1,5 +1,6 @@
 package com.uiiang.entity;
 
+import com.uiiang.controller.GuessResultController;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -23,10 +24,10 @@ public class MatchSchedule {
     private String homeEmblems;
     private String awayEmblems;
     private String stadiumName;
-    private int homeResult;
-    private int awayResult;
-    private String resultType;
-    private int status;//0,未开始, 1,进行中 2,已结束  3,已计算
+    private int homeResult = 0;
+    private int awayResult = 0;
+    private String resultType = GuessResultController.DRAW;
+    private int status = 0;//0,未开始, 1,进行中 2,已结束  3,已计算
 
     public String getResultType() {
         return resultType;

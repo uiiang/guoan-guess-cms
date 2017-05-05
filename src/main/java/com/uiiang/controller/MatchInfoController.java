@@ -48,6 +48,7 @@ public class MatchInfoController {
             MatchInfo matchInfo = matchInfoService.findOne(id);
             matchInfo.setStatus(MATCH_INFO_STATUS_START);
             matchInfo.setStartDate(new Date());
+            matchInfoService.save(matchInfo);
         }
         return "redirect:matchlist.do";
     }
@@ -59,6 +60,7 @@ public class MatchInfoController {
             MatchInfo matchInfo = matchInfoService.findOne(id);
             matchInfo.setStatus(MATCH_INFO_STATUS_FINISH);
             matchInfo.setFinishDate(new Date());
+            matchInfoService.save(matchInfo);
         }
         return "redirect:matchlist.do";
     }

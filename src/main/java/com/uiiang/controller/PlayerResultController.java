@@ -43,12 +43,12 @@ public class PlayerResultController {
         List<MatchInfo> matchInfos = matchInfoService.findByStatus(MatchInfoController.MATCH_INFO_STATUS_START);
         model.addAttribute("matchlist", matchInfos);
 
-        MatchInfo matchInfo;
-        if (matchInfoId != null && matchInfoId > 0) {
-            matchInfo = matchInfoService.findOne(matchInfoId);
-        } else {
-            matchInfo = matchInfos.get(0);
-        }
+//        MatchInfo matchInfo;
+//        if (matchInfoId != null && matchInfoId > 0) {
+//            matchInfo = matchInfoService.findOne(matchInfoId);
+//        } else {
+//            matchInfo = matchInfos.get(0);
+//        }
         List<RankingList> all = playerResultService.getRanking(matchInfos);
         model.addAttribute("playerResultList", all);
         return "playerresult/resultList";

@@ -16,9 +16,9 @@ public class NowMatchInfo {
     @JoinColumn(name = "MSCHE_ID")
     private MatchSchedule matchSchedule;
     private int joinNum;
-    private int homeWinNum;
-    private int awayWinNum;
-    private int drawNum;
+    private int homeWinNum = 0;
+    private int awayWinNum = 0;
+    private int drawNum = 0;
 
     public Long getId() {
         return id;

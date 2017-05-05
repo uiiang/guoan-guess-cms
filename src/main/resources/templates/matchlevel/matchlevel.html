@@ -24,9 +24,11 @@
             <td th:text="未开始" th:if="${match.status==0}">未开始</td>
             <td th:text="进行中" th:if="${match.status==1}">进行中</td>
             <td th:text="已结束" th:if="${match.status==2}">已结束</td>
-            <td><a href="#" th:href="${ '/editmatch?id=' + match.id}">edit</a>
-                <a href="#" th:href="${'/countresult?mainfoid=' + match.id}">计算</a></td>
-
+            <td><a href="#" th:href="${'editmatch?id=' + match.id}">edit</a>
+                <a href="#" th:href="${'countresult?mainfoid=' + match.id}">计算</a>
+                <a href="#" th:href="${'startmatch?id=' + match.id}" th:if="${match.status==0}">开始赛事</a>
+                <a href="#" th:href="${'finishmatch?id=' + match.id}" th:if="${match.status==1}">结束赛事</a>
+            </td>
         </tr>
         </tbody>
 

@@ -1,16 +1,16 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.2.RELEASE'
-	}
-	repositories {
-		jcenter()
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+    }
+    repositories {
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 apply plugin: 'java'
@@ -21,34 +21,47 @@ apply plugin: "war"
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 war {
-	baseName = 'guoan1992'
-	version =  '0.5.0'
+    baseName = 'guoan1992'
+    version = '0.5.0'
 }
-configurations{
-	provided
+configurations {
+    provided
 }
 
 allprojects {
-	repositories {
-		jcenter()
-	}
+    repositories {
+        jcenter()
+    }
 }
+sourceSets {
+    dev {
+        resources {
+            srcDir("src/main/resources-dev")
 
+        }
+    }
+    prod{
+        resources {
+            srcDir("src/main/resources-prod")
+
+        }
+    }
+}
 dependencies {
-	compile('mysql:mysql-connector-java:5.1.41')
-	compile("org.json:json")
-	compile("org.springframework.boot:spring-boot-starter-actuator")
-	compile("org.springframework.boot:spring-boot-starter-data-jpa")
-	compile("org.springframework.boot:spring-boot-starter-data-rest")
-	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    compile('mysql:mysql-connector-java:5.1.41')
+    compile("org.json:json")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
 //thymeleaf
-	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
 //WebJars
-	compile("org.webjars:bootstrap:3.3.4")
-	compile("org.webjars:jquery:2.1.4")
-	// https://mvnrepository.com/artifact/org.webjars/datatables
-	compile group: 'org.webjars', name: 'datatables', version: '1.10.13'
-	compile("org.springframework.boot:spring-boot-devtools")
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile("org.webjars:bootstrap:3.3.4")
+    compile("org.webjars:jquery:2.1.4")
+    // https://mvnrepository.com/artifact/org.webjars/datatables
+    compile group: 'org.webjars', name: 'datatables', version: '1.10.13'
+    compile("org.springframework.boot:spring-boot-devtools")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }

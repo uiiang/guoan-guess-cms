@@ -20,6 +20,7 @@
                     <select
                             th:field="${scheInfo.homeTeam}" class="form-control"
                             data-required="true">
+                        <option value=""></option>
                         <option th:each="team : ${teamList}"
                                 th:value="${team.chineseName}"
                                 th:text="${team.chineseName}"
@@ -35,6 +36,7 @@
                     <select
                             th:field="${scheInfo.awayTeam}" class="form-control"
                             data-required="true">
+                        <option value=""></option>
                         <option th:each="team : ${teamList}"
                                 th:value="${team.chineseName}"
                                 th:selected="${#strings.equals(team.chineseName,scheInfo.awayTeam) ? 'selected' : ''}"
