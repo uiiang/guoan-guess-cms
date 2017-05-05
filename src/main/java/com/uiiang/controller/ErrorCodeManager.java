@@ -10,4 +10,7 @@ public class ErrorCodeManager {
 
     public static final int ERROR_CODE_GUESS_NOTSTART = 100;//竞猜比赛未开始
     public static final String ERROR_MSG_GUESS_NOTSTART = "竞猜比赛未开始";//竞猜比赛未开始
+
+    public static final int ERROR_CODE_PLAYER_GUESS_NOT_FOUND = 101;
+    public static final String ERROR_MSG_PLAYER_GUESS_NOT_FOUND = "未找到该玩家的竞猜记录";
 }

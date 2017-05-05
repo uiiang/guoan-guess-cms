@@ -61,6 +61,44 @@ public class GuessResultController {
         return guessResultPreview;
     }
 
+    @RequestMapping(value = "/getplresult", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonWrapper getPlayerGuessResult(@RequestParam(value = "m") Long mschid
+            , HttpServletRequest request, HttpServletResponse response) {
+        LoginService service = new LoginService(request, response);
+        UserInfo userInfo = null;
+        // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
+        try {
+            userInfo = service.check();
+        } catch (LoginServiceException | ConfigurationException e) {
+            LogUtils.ex(e);
+            e.printStackTrace();
+        }
+
+        GuessResult guessResult = new GuessResult();
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        if (userInfo != null) {
+            PlayerInfo playerInfo = new PlayerInfo();
+            playerInfo.setOpenId(userInfo.getOpenId());
+            MatchSchedule matchSchedule = matchScheduleService.findOne(mschid);
+            List<GuessResult> tmpGuessResultList = guessResultService.findByPlayerInfoAndMatchSchedule(playerInfo
+                    , matchSchedule);
+            if (tmpGuessResultList != null && tmpGuessResultList.size() > 0) {
+                guessResult = tmpGuessResultList.get(0);
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+            } else {
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_GUESS_NOT_FOUND);
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_GUESS_NOT_FOUND);
+            }
+        } else {
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_GUESS_NOT_FOUND);
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_GUESS_NOT_FOUND);
+        }
+        jsonWrapper.setData(guessResult);
+        return jsonWrapper;
+    }
+
     @RequestMapping(value = "/submitguess", method = RequestMethod.POST)
     @ResponseBody
     public void submitGuess(@RequestParam(value = "m") String matchid
