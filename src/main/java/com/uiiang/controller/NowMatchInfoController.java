@@ -3,6 +3,7 @@ package com.uiiang.controller;
 import com.uiiang.biz.GuessResultService;
 import com.uiiang.biz.MatchScheduleService;
 import com.uiiang.biz.NowMatchInfoService;
+import com.uiiang.entity.JsonWrapper;
 import com.uiiang.entity.MatchSchedule;
 import com.uiiang.entity.NowMatchInfo;
 import org.springframework.stereotype.Controller;
@@ -29,9 +30,18 @@ public class NowMatchInfoController {
 
     @GetMapping("/nowmatch")
     @ResponseBody
-    public Iterable<NowMatchInfo> listAll(Model model) {
+    public JsonWrapper listAll(Model model) {
         Iterable<NowMatchInfo> all = nowMatchInfoService.findAll();
-        return all;
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        if (all == null || nowMatchInfoService.count() == 0) {
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_GUESS_NOTSTART);
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_GUESS_NOTSTART);
+        } else {
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+        }
+        jsonWrapper.setData(all);
+        return jsonWrapper;
     }
 
     @RequestMapping(value = "/startnewmatch", method = RequestMethod.GET)
@@ -59,7 +69,7 @@ public class NowMatchInfoController {
 
 
     @RequestMapping(value = "/countMatchResult", method = RequestMethod.GET)
-    public String countMatchResult(@RequestParam(value = "id", required = false) Long id){
+    public String countMatchResult(@RequestParam(value = "id", required = false) Long id) {
         NowMatchInfo nowMatchInfo = nowMatchInfoService.findOne(id);
 
         Long winSum = guessResultService.countByMatchScheduleAndResultType(nowMatchInfo.getMatchSchedule(), GuessResultController.WIN);
