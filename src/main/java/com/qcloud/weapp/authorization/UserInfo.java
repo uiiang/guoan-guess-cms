@@ -1,5 +1,6 @@
 package com.qcloud.weapp.authorization;
 
+import com.uiiang.utils.LogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,7 +53,8 @@ public class UserInfo {
 			if (json.has("province")) userInfo.province = json.getString("province");
 			if (json.has("country")) userInfo.country = json.getString("country");
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		return userInfo;
 	}

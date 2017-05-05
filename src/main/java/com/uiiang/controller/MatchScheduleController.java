@@ -6,6 +6,7 @@ import com.uiiang.biz.MatchScheduleService;
 import com.uiiang.entity.LeagueTeam;
 import com.uiiang.entity.MatchInfo;
 import com.uiiang.entity.MatchSchedule;
+import com.uiiang.utils.LogUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -70,7 +71,7 @@ public class MatchScheduleController {
     @GetMapping("nextmatch")
     public String getNextGuessMatch(Model model) {
         MatchSchedule nextMatch = service.findTopByStatusLessThanOrderByMatchDateTimeAsc(1);
-        System.out.println("nextMatch = " + nextMatch.getHomeTeam() + " : " + nextMatch.getAwayTeam());
+        LogUtils.i("nextMatch = " + nextMatch.getHomeTeam() + " : " + nextMatch.getAwayTeam());
         model.addAttribute("nextmatch", nextMatch);
         return "";
     }

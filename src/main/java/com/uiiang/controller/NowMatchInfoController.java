@@ -6,6 +6,7 @@ import com.uiiang.biz.NowMatchInfoService;
 import com.uiiang.entity.JsonWrapper;
 import com.uiiang.entity.MatchSchedule;
 import com.uiiang.entity.NowMatchInfo;
+import com.uiiang.utils.LogUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +57,8 @@ public class NowMatchInfoController {
         nowMatchInfo.setStatus(0);
         nowMatchInfo.setMatchSchedule(nextMatch);
         nowMatchInfoService.save(nowMatchInfo);
-        return "redirect:/";
+        LogUtils.i("new match " + nowMatchInfo.getMatchSchedule().getHomeTeam() + " : " + nowMatchInfo.getMatchSchedule().getAwayTeam());
+        return "redirect:/guoan1992/";
     }
 
 

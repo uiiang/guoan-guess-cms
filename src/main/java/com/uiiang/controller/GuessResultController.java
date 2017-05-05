@@ -9,6 +9,7 @@ import com.uiiang.biz.MatchInfoService;
 import com.uiiang.biz.MatchScheduleService;
 import com.uiiang.biz.PlayerInfoService;
 import com.uiiang.entity.*;
+import com.uiiang.utils.LogUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -66,13 +67,14 @@ public class GuessResultController {
             , @RequestParam(value = "h") String homegoal
             , @RequestParam(value = "a") String awaygoal
             , HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(matchid + "  " + homegoal + "  " + awaygoal);
+        LogUtils.i(matchid + "  " + homegoal + "  " + awaygoal);
         LoginService service = new LoginService(request, response);
         UserInfo userInfo = null;
         // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
         try {
             userInfo = service.check();
         } catch (LoginServiceException | ConfigurationException e) {
+            LogUtils.ex(e);
             e.printStackTrace();
         }
 

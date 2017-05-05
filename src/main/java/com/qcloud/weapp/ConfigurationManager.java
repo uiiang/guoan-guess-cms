@@ -1,5 +1,6 @@
 package com.qcloud.weapp;
 
+import com.uiiang.utils.LogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,6 +79,7 @@ public class ConfigurationManager {
 			configJsonText = sb.toString();
 			br.close();
 		} catch (IOException e) {
+			LogUtils.ex(e);
 			e.printStackTrace();
 		}
 		

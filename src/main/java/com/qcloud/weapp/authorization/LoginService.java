@@ -1,6 +1,7 @@
 package com.qcloud.weapp.authorization;
 
 import com.qcloud.weapp.ConfigurationException;
+import com.uiiang.utils.LogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,7 +32,8 @@ public class LoginService {
 			this.response.setCharacterEncoding("utf-8");
 			this.response.getWriter().print(json.toString());
 		} catch (IOException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 	}
 	
@@ -40,7 +42,8 @@ public class LoginService {
 		try {
 			json.put(Constants.WX_SESSION_MAGIC_ID, 1);
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		return json;
 	}
@@ -54,7 +57,8 @@ public class LoginService {
 			}
 			json.put("message", error.getMessage());
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		return json;
 	}
@@ -78,7 +82,8 @@ public class LoginService {
 		try {
 			loginResult = api.login(code, encryptedData, iv);
 		} catch (AuthorizationAPIException apiError) {
-			LoginServiceException error = new LoginServiceException(Constants.ERR_LOGIN_FAILED, apiError.getMessage(), apiError);
+            LogUtils.ex(apiError);
+            LoginServiceException error = new LoginServiceException(Constants.ERR_LOGIN_FAILED, apiError.getMessage(), apiError);
 			writeJson(getJsonForError(error));
 			throw error;
 		}
@@ -92,13 +97,15 @@ public class LoginService {
 			json.put("session", session);
 			writeJson(json);
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		
 		try {
 			userInfo = loginResult.getJSONObject("user_info");
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		
 		return UserInfo.BuildFromJson(userInfo);
@@ -117,7 +124,8 @@ public class LoginService {
 		try {
 			checkLoginResult = api.checkLogin(id, skey);
 		} catch (AuthorizationAPIException apiError) {
-			String errorType = Constants.ERR_CHECK_LOGIN_FAILED;
+            LogUtils.ex(apiError);
+            String errorType = Constants.ERR_CHECK_LOGIN_FAILED;
 			if (apiError.getCode() == 60011 || apiError.getCode() == 60012) {
 				errorType = Constants.ERR_INVALID_SESSION;
 			}
@@ -129,7 +137,8 @@ public class LoginService {
 		try {
 			userInfo = checkLoginResult.getJSONObject("user_info");
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		return UserInfo.BuildFromJson(userInfo);
 	}

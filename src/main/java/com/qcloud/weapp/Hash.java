@@ -1,5 +1,7 @@
 package com.qcloud.weapp;
 
+import com.uiiang.utils.LogUtils;
+
 import java.security.MessageDigest;
 
 /**
@@ -30,7 +32,8 @@ public class Hash {
 			messageDigest.update(str.getBytes("utf-8"));
 			return byteArrayToHexString(messageDigest.digest());
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+            LogUtils.ex(e);
+            throw new RuntimeException(e);
 		}
 	}
 

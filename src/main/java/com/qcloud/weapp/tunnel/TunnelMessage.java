@@ -1,5 +1,6 @@
 package com.qcloud.weapp.tunnel;
 
+import com.uiiang.utils.LogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +17,8 @@ public class TunnelMessage {
 			this.type = resolved.getString("type");
 			this.content = resolved.get("content");
 		} catch (JSONException e) {
-			this.type = "UnknownRaw";
+            LogUtils.ex(e);
+            this.type = "UnknownRaw";
 			this.content = messageRaw;
 		}
 	}

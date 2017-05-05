@@ -6,6 +6,7 @@ import com.qcloud.weapp.Hash;
 import com.qcloud.weapp.authorization.LoginService;
 import com.qcloud.weapp.authorization.LoginServiceException;
 import com.qcloud.weapp.authorization.UserInfo;
+import com.uiiang.utils.LogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,7 +40,8 @@ public class TunnelService {
 			this.response.setCharacterEncoding("utf-8");
 			this.response.getWriter().print(json.toString());
 		} catch (IOException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 	}
 	
@@ -52,7 +54,8 @@ public class TunnelService {
 			}
 			json.put("message", error.getMessage());
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		return json;
 	}
@@ -91,7 +94,8 @@ public class TunnelService {
 				LoginService loginService = new LoginService(request, response);
 				user = loginService.check();
 			} catch (Exception e) {
-				return;
+                LogUtils.ex(e);
+                return;
 			}
 		}
 
@@ -100,7 +104,8 @@ public class TunnelService {
 			String receiveUrl = buildReceiveUrl();
 			tunnel = api.requestConnect(receiveUrl);
 		} catch (Exception e) {
-			writeJson(getJsonForError(e));
+            LogUtils.ex(e);
+            writeJson(getJsonForError(e));
 			return;
 		}
 
@@ -108,7 +113,8 @@ public class TunnelService {
 		try {
 			result.put("url", tunnel.getConnectUrl());
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		writeJson(result);
 
@@ -134,7 +140,8 @@ public class TunnelService {
 				requestContent += line;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 			writeJson(getJsonForError(e));
 			return;
 		}
@@ -148,12 +155,14 @@ public class TunnelService {
 			signature = body.getString("signature");
 			// String signature = body.getString("signature");
 		} catch (JSONException e) {
-			JSONObject errJson = new JSONObject();
+            LogUtils.ex(e);
+            JSONObject errJson = new JSONObject();
 			try {
 				errJson.put("code", 9001);
 				errJson.put("message", "Cant not parse the request body: invalid json");
 			} catch (JSONException e1) {
-				e1.printStackTrace();
+                LogUtils.ex(e);
+                e1.printStackTrace();
 			}
 			writeJson(errJson);
 		}
@@ -166,7 +175,8 @@ public class TunnelService {
 				json.put("code", 9003);
 				json.put("message", "Bad Request - 签名错误");
 			} catch (JSONException e) {
-				e.printStackTrace();
+                LogUtils.ex(e);
+                e.printStackTrace();
 			}
 			writeJson(json);
 			return;
@@ -190,12 +200,14 @@ public class TunnelService {
 			response.put("message", "OK");
 			writeJson(response);
 		} catch (JSONException e) {
-			JSONObject response = new JSONObject();
+            LogUtils.ex(e);
+            JSONObject response = new JSONObject();
 			try {
 				response.put("code", 9004);
 				response.put("message", "Bad Request - 无法解析的数据包");
 			} catch (JSONException e1) {
-				e1.printStackTrace();
+                LogUtils.ex(e);
+                e1.printStackTrace();
 			}
 			writeJson(response);
 			e.printStackTrace();

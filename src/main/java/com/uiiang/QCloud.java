@@ -2,6 +2,7 @@ package com.uiiang;
 
 import com.qcloud.weapp.ConfigurationException;
 import com.qcloud.weapp.ConfigurationManager;
+import com.uiiang.utils.LogUtils;
 import org.json.JSONException;
 
 /**
@@ -11,12 +12,11 @@ public class QCloud {
     public static void setupSDK() {
         try {
             String configFilePath = getConfigFilePath();
-            System.out.println("QCloud SDK 配置文件路径：" + configFilePath);
+            LogUtils.i("QCloud SDK 配置文件路径：" + configFilePath);
             ConfigurationManager.setupFromFile(configFilePath);
-            System.out.println("QCloud SDK 已成功配置！");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ConfigurationException e) {
+            LogUtils.i("QCloud SDK 已成功配置！");
+        } catch (JSONException | ConfigurationException e) {
+            LogUtils.ex(e);
             e.printStackTrace();
         }
     }
@@ -24,7 +24,7 @@ public class QCloud {
     private static String getConfigFilePath() {
         String osName = System.getProperty("os.name").toLowerCase();
         String defaultConfigFilePath = null;
-        System.out.println("os name = " + osName);
+        LogUtils.i("os name = " + osName);
         boolean isWindows = osName.indexOf("windows") > -1;
         boolean isLinux = osName.indexOf("linux") > -1;
 

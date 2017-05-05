@@ -1,5 +1,7 @@
 package com.qcloud.weapp;
 
+import com.uiiang.utils.LogUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -61,7 +63,8 @@ public class HttpRequest {
 				}
 			}
 		} catch (ConfigurationException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 
 		connection = connectionProvider.getConnection(url, proxy);
@@ -74,7 +77,8 @@ public class HttpRequest {
 				networkTimeout = 30000;
 			}
 		} catch (ConfigurationException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		
 		connection.setConnectTimeout(networkTimeout);

@@ -6,6 +6,7 @@ import com.qcloud.weapp.authorization.LoginServiceException;
 import com.qcloud.weapp.authorization.UserInfo;
 import com.uiiang.biz.PlayerInfoService;
 import com.uiiang.entity.PlayerInfo;
+import com.uiiang.utils.LogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -28,12 +29,13 @@ public class LoginController {
 
     @GetMapping("/login")
     public void loginServer(HttpServletRequest request, HttpServletResponse response) {
+        LogUtils.i("========= LoginSuccess, loginServer: ==========");
         LoginService loginService = new LoginService(request, response);
         try {
             // 调用登录接口，如果登录成功可以获得登录信息
             UserInfo userInfo = loginService.login();
-            System.out.println("========= LoginSuccess, UserInfo: ==========");
-            System.out.println(userInfo.toString());
+            LogUtils.i("========= LoginSuccess, UserInfo: ==========");
+            LogUtils.i(userInfo.toString());
 
             PlayerInfo playerInfo = new PlayerInfo();
             playerInfo.setAvatarUrl(userInfo.getAvatarUrl());
@@ -46,11 +48,9 @@ public class LoginController {
             playerInfo.setProvince(userInfo.getProvince());
 
             crudRepository.save(playerInfo);
-        } catch (LoginServiceException e) {
+        } catch (LoginServiceException | ConfigurationException e) {
             // 登录失败会抛出登录失败异常
-            e.printStackTrace();
-        } catch (ConfigurationException e) {
-            // SDK 如果还没有配置会抛出配置异常
+            LogUtils.ex(e);
             e.printStackTrace();
         }
     }
@@ -62,7 +62,7 @@ public class LoginController {
         try {
             // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
             UserInfo userInfo = service.check();
-            System.out.println("user info = " + userInfo.getOpenId() + "  " + userInfo.getNickName());
+            LogUtils.i("user info = " + userInfo.getOpenId() + "  " + userInfo.getNickName());
             // 获取会话成功，输出获得的用户信息
             JSONObject result = new JSONObject();
             JSONObject data = new JSONObject();
@@ -74,13 +74,8 @@ public class LoginController {
             response.setCharacterEncoding("utf-8");
             response.getWriter().write(result.toString());
 
-        } catch (LoginServiceException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (LoginServiceException | JSONException | ConfigurationException | IOException e) {
+            LogUtils.ex(e);
             e.printStackTrace();
         }
     }

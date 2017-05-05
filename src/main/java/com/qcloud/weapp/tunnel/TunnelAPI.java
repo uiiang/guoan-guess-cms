@@ -4,6 +4,7 @@ import com.qcloud.weapp.ConfigurationException;
 import com.qcloud.weapp.ConfigurationManager;
 import com.qcloud.weapp.Hash;
 import com.qcloud.weapp.HttpRequest;
+import com.uiiang.utils.LogUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +24,8 @@ class TunnelAPI {
 			data.put("receiveUrl", receiveUrl);
 			data.put("protocolType", "wss");
 		} catch (JSONException e) {
-			// impossible
+            LogUtils.ex(e);
+            // impossible
 		}
 
 		JSONObject result = request("/get/wsurl", data, true);
@@ -48,7 +50,8 @@ class TunnelAPI {
 			packet.put("type", messageType);
 			packet.put("content", messageContent);
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		return emitPacket(tunnelIds, "message", packet);
 	}
@@ -65,7 +68,8 @@ class TunnelAPI {
 			packet.put("content", packetContent == null ? null : packetContent.toString());
 			data.put(packet);
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		try {
 			JSONObject emitReturn = request("/ws/push", data, false);
@@ -79,7 +83,8 @@ class TunnelAPI {
 			EmitResult emitResult = new EmitResult(infos);
 			return emitResult;
 		} catch (Exception e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 			throw new EmitError("网络不可用或者信道服务器不可用", e);
 		}
 	}
@@ -97,7 +102,8 @@ class TunnelAPI {
 			String requestContent = buildRequestContent(data, isSendTcKey);
 			responseContent = new HttpRequest(url).post(requestContent);
 		} catch (Exception e) {
-			throw new Exception("请求信道 API 失败，网络异常或鉴权服务器错误", e);
+            LogUtils.ex(e);
+            throw new Exception("请求信道 API 失败，网络异常或鉴权服务器错误", e);
 		}
 
 		try {
@@ -107,7 +113,8 @@ class TunnelAPI {
 			}
 			return body.has("data") ? new JSONObject(body.getString("data")) : null;
 		} catch (JSONException e) {
-			throw new Exception("信道服务器响应格式错误，无法解析 JSON 字符串", e);
+            LogUtils.ex(e);
+            throw new Exception("信道服务器响应格式错误，无法解析 JSON 字符串", e);
 		}
 
 	}
@@ -125,7 +132,8 @@ class TunnelAPI {
 			}
 			requestPayload.put("signature", signature(encodeData));
 		} catch (JSONException e) {
-			e.printStackTrace();
+            LogUtils.ex(e);
+            e.printStackTrace();
 		}
 		return requestPayload.toString();
 	}
