@@ -101,47 +101,63 @@ public class GuessResultController {
 
     @RequestMapping(value = "/submitguess", method = RequestMethod.POST)
     @ResponseBody
-    public void submitGuess(@RequestParam(value = "m") String matchid
+    public JsonWrapper submitGuess(@RequestParam(value = "m") String matchid
             , @RequestParam(value = "h") String homegoal
             , @RequestParam(value = "a") String awaygoal
             , HttpServletRequest request, HttpServletResponse response) {
         LogUtils.i(matchid + "  " + homegoal + "  " + awaygoal);
-        LoginService service = new LoginService(request, response);
-        UserInfo userInfo = null;
-        // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
+        JsonWrapper jsonWrapper = new JsonWrapper();
         try {
+            Integer.valueOf(homegoal);
+            Integer.valueOf(awaygoal);
+            Integer.valueOf(matchid);
+
+
+            LoginService service = new LoginService(request, response);
+            UserInfo userInfo = null;
+            // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
             userInfo = service.check();
+
+            if (userInfo != null) {
+                PlayerInfo playerInfo = new PlayerInfo();
+                playerInfo.setOpenId(userInfo.getOpenId());
+
+                MatchSchedule matchSchedule = matchScheduleService.findOne(Long.valueOf(matchid));
+                List<MatchInfo> matchInfos = matchInfoService.findByChineseName(matchSchedule.getMatchLevel());
+                GuessResult guessResult = new GuessResult();
+
+                List<GuessResult> tmpGuessResultList = guessResultService.findByPlayerInfoAndMatchSchedule(playerInfo
+                        , matchSchedule);
+                if (tmpGuessResultList != null && tmpGuessResultList.size() > 0) {
+                    guessResult = tmpGuessResultList.get(0);
+                } else {
+                    guessResult.setMatchSchedule(matchSchedule);
+                    guessResult.setPlayerInfo(playerInfo);
+                }
+                guessResult.setMatchInfo(matchInfos.get(0));
+                guessResult.setSubmitTime(new Date());
+                guessResult.setHomeResult(Integer.valueOf(homegoal));
+                guessResult.setAwayResult(Integer.valueOf(awaygoal));
+                String resultType = getResultType(guessResult);
+                guessResult.setResultType(resultType);
+                guessResultService.save(guessResult);
+            } else {
+                //TODO
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_USER_LOGIN);
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_USER_LOGIN);
+            }
+        } catch (NumberFormatException e) {
+            LogUtils.ex(e);
+            e.printStackTrace();
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_NUMBER_FORMAT);
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_NUMBER_FORMAT);
         } catch (LoginServiceException | ConfigurationException e) {
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_USER_LOGIN);
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_USER_LOGIN);
             LogUtils.ex(e);
             e.printStackTrace();
         }
-
-        if (userInfo != null) {
-            PlayerInfo playerInfo = new PlayerInfo();
-            playerInfo.setOpenId(userInfo.getOpenId());
-
-            MatchSchedule matchSchedule = matchScheduleService.findOne(Long.valueOf(matchid));
-            List<MatchInfo> matchInfos = matchInfoService.findByChineseName(matchSchedule.getMatchLevel());
-            GuessResult guessResult = new GuessResult();
-
-            List<GuessResult> tmpGuessResultList = guessResultService.findByPlayerInfoAndMatchSchedule(playerInfo
-                    , matchSchedule);
-            if (tmpGuessResultList != null && tmpGuessResultList.size() > 0) {
-                guessResult = tmpGuessResultList.get(0);
-            } else {
-                guessResult.setMatchSchedule(matchSchedule);
-                guessResult.setPlayerInfo(playerInfo);
-            }
-            guessResult.setMatchInfo(matchInfos.get(0));
-            guessResult.setSubmitTime(new Date());
-            guessResult.setHomeResult(Integer.valueOf(homegoal));
-            guessResult.setAwayResult(Integer.valueOf(awaygoal));
-            String resultType = getResultType(guessResult);
-            guessResult.setResultType(resultType);
-            guessResultService.save(guessResult);
-        } else {
-            //TODO
-        }
+        return jsonWrapper;
     }
 
     @RequestMapping(value = "/createGuess", method = RequestMethod.POST)
