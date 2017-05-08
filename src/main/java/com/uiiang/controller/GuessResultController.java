@@ -61,6 +61,43 @@ public class GuessResultController {
         return guessResultPreview;
     }
 
+
+    @RequestMapping(value = "/getplresultlist", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonWrapper getPlayerGuessResultList(HttpServletRequest request, HttpServletResponse response) {
+        LoginService service = new LoginService(request, response);
+        UserInfo userInfo = null;
+//        userInfo = new UserInfo();
+        // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
+        try {
+            userInfo = service.check();
+        } catch (LoginServiceException | ConfigurationException e) {
+            LogUtils.ex(e);
+            e.printStackTrace();
+        }
+
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        if (userInfo != null) {
+            PlayerInfo playerInfo = new PlayerInfo();
+//            playerInfo.setOpenId("olQbt0P785TGy8gMyYwx-ku6eqUg");
+            playerInfo.setOpenId(userInfo.getOpenId());
+            List<GuessResult> tmpGuessResultList = guessResultService.findByPlayerInfoOrderBySubmitTimeDesc(playerInfo);
+            if (tmpGuessResultList != null && tmpGuessResultList.size() > 0) {
+                jsonWrapper.setData(tmpGuessResultList);
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+            } else {
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_GUESS_NOT_FOUND);
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_GUESS_NOT_FOUND);
+            }
+        } else {
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_GUESS_NOT_FOUND);
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_GUESS_NOT_FOUND);
+        }
+        return jsonWrapper;
+    }
+
+
     @RequestMapping(value = "/getplresult", method = RequestMethod.GET)
     @ResponseBody
     public JsonWrapper getPlayerGuessResult(@RequestParam(value = "m") Long mschid

@@ -33,7 +33,7 @@ public class QCloud {
         } else if (isLinux) {
             defaultConfigFilePath = "/etc/qcloud/sdk.config";
         } else {
-            defaultConfigFilePath = "/etc/qcloud/sdk.config";
+            defaultConfigFilePath = "/DevTools/code/springboot/sdk.config";
         }
         return defaultConfigFilePath;
     }

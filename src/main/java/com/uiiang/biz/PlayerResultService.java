@@ -18,6 +18,8 @@ public interface PlayerResultService extends CrudRepository<PlayerResult, Long> 
 
     PlayerResult findAllLimit1ByMatchInfoAndPlayerInfo(MatchInfo matchInfo, PlayerInfo playerInfo);
 
+    PlayerResult findAllLimit1ByPlayerInfo(PlayerInfo playerInfo);
+
     //两个sum和playerinfo的顺序很重要
     @Query("SELECT new com.uiiang.entity.RankingList(sum(joinNum) as joinNum,sum(totalScore) as totalScore,playerInfo) FROM PlayerResult where MATCH_ID in :matchIds group by PLAYER_ID order by totalScore desc,joinNum desc")
     List<RankingList> getRanking(@Param("matchIds") List<MatchInfo> matchIds);

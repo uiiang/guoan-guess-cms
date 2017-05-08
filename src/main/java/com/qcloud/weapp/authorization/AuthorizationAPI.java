@@ -69,7 +69,7 @@ class AuthorizationAPI {
         }
 
         if (returnCode != 0) {
-            AuthorizationAPIException error = new AuthorizationAPIException(String.format("调用鉴权服务失败：#%d - %s", returnCode, returnMessage));
+            AuthorizationAPIException error = new AuthorizationAPIException(String.format("调用鉴权服务失败：#%d - %s " + getAPIUrl(), returnCode, returnMessage));
             error.setCode(returnCode);
             throw error;
         }

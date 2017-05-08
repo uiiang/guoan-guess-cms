@@ -1,14 +1,18 @@
 package com.uiiang.controller;
 
+import com.qcloud.weapp.ConfigurationException;
+import com.qcloud.weapp.authorization.LoginService;
+import com.qcloud.weapp.authorization.LoginServiceException;
+import com.qcloud.weapp.authorization.UserInfo;
 import com.uiiang.biz.*;
 import com.uiiang.entity.*;
 import com.uiiang.utils.LogUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -28,6 +32,41 @@ public class PlayerResultController {
         this.playerInfoService = playerInfoService;
         this.guessResultService = guessResultService;
         this.matchInfoService = matchInfoService;
+    }
+
+    @RequestMapping(value = "/getplayresult", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonWrapper getPlayerResult(HttpServletRequest request, HttpServletResponse response) {
+        LoginService service = new LoginService(request, response);
+        UserInfo userInfo = null;
+//        userInfo = new UserInfo();
+        // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
+        try {
+            userInfo = service.check();
+        } catch (LoginServiceException | ConfigurationException e) {
+            LogUtils.ex(e);
+            e.printStackTrace();
+        }
+
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        if (userInfo != null) {
+            PlayerInfo playerInfo = new PlayerInfo();
+//            playerInfo.setOpenId("olQbt0P785TGy8gMyYwx-ku6eqUg");
+            playerInfo.setOpenId(userInfo.getOpenId());
+            PlayerResult playerResult = playerResultService.findAllLimit1ByPlayerInfo(playerInfo);
+            if (playerResult != null) {
+                jsonWrapper.setData(playerResult);
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+            } else {
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_RESULT_NOT_FOUND);
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_RESULT_NOT_FOUND);
+            }
+        } else {
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_RESULT_NOT_FOUND);
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_RESULT_NOT_FOUND);
+        }
+        return jsonWrapper;
     }
 
 

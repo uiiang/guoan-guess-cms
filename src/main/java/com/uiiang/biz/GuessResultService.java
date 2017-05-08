@@ -17,6 +17,8 @@ public interface GuessResultService extends CrudRepository<GuessResult, Long> {
 
     List<GuessResult> findByPlayerInfoAndMatchSchedule(PlayerInfo playerInfo, MatchSchedule matchSchedule);
 
+    List<GuessResult> findByPlayerInfoOrderBySubmitTimeDesc(PlayerInfo playerInfo);
+
     long countByMatchScheduleAndResultType(MatchSchedule matchSchedule, String resultType);
 
     long countByPlayerInfoAndMatchInfo(PlayerInfo playerInfo, MatchInfo matchInfo);

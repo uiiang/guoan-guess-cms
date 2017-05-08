@@ -13,6 +13,8 @@ public class ErrorCodeManager {
 
     public static final int ERROR_CODE_PLAYER_GUESS_NOT_FOUND = 101;
     public static final String ERROR_MSG_PLAYER_GUESS_NOT_FOUND = "未找到该玩家的竞猜记录";
+    public static final int ERROR_CODE_PLAYER_RESULT_NOT_FOUND = 102;
+    public static final String ERROR_MSG_PLAYER_RESULT_NOT_FOUND = "未找到该玩家的积分记录";
 
     public static final int ERROR_CODE_NUMBER_FORMAT = 200;
     public static final String ERROR_MSG_NUMBER_FORMAT = "数字格式错误";
