@@ -34,6 +34,16 @@ public class PlayerInfo {
     /** The country. */
     private String country;
 
+    private String role;//player, admin
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getOpenId() {
         return openId;
     }

@@ -20,4 +20,6 @@ public class ErrorCodeManager {
     public static final String ERROR_MSG_NUMBER_FORMAT = "数字格式错误";
     public static final int ERROR_CODE_USER_LOGIN = 201;
     public static final String ERROR_MSG_USER_LOGIN = "玩家登录错误";
+    public static final int ERROR_CODE_MATCH_SCHEDULE_NOT_FOUND = 202;
+    public static final String ERROR_MSG_MATCH_SCHEDULE_NOT_FOUND = "未找到该场比赛的赛程信息";
 }

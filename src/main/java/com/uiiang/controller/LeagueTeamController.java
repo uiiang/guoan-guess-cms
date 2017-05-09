@@ -2,6 +2,7 @@ package com.uiiang.controller;
 
 import com.uiiang.biz.LeagueTeamService;
 import com.uiiang.biz.StadiumInfoService;
+import com.uiiang.entity.JsonWrapper;
 import com.uiiang.entity.LeagueTeam;
 import com.uiiang.entity.StadiumInfo;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,17 @@ public class LeagueTeamController {
     @GetMapping("/listTeam")
     public Iterable<LeagueTeam> listLeagueTeam(Model model) {
         return leagueTeamService.findAll();
+    }
+
+
+    @GetMapping("/API/listTeam")
+    @ResponseBody
+    public JsonWrapper listLeagueTeamApi() {
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        jsonWrapper.setData(leagueTeamService.findAll());
+        jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+        jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+        return jsonWrapper;
     }
 
     @GetMapping("/{teamname}")

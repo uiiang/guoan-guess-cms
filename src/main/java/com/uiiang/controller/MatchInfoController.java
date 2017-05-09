@@ -1,6 +1,7 @@
 package com.uiiang.controller;
 
 import com.uiiang.biz.MatchInfoService;
+import com.uiiang.entity.JsonWrapper;
 import com.uiiang.entity.MatchInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,16 @@ public class MatchInfoController {
         Iterable<MatchInfo> all = matchInfoService.findAllByOrderByStatusAsc();
         model.addAttribute("matchlist", all);
         return "matchlevel/matchlevel";
+    }
+
+    @GetMapping("/API/matchlist")
+    @ResponseBody
+    public JsonWrapper listAll() {
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        jsonWrapper.setData(matchInfoService.findAllByOrderByStatusAsc());
+        jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+        jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+        return jsonWrapper;
     }
 
     @RequestMapping(value = "/createMatch", method = RequestMethod.POST)

@@ -47,6 +47,17 @@ public class NowMatchInfoController {
 
     @RequestMapping(value = "/startnewmatch", method = RequestMethod.GET)
     public String startNewMatch(Model model) {
+        handleStartNewMatch();
+        return "redirect:/guoan1992/";
+    }
+
+    @RequestMapping(value = "/API/startnewmatch", method = RequestMethod.GET)
+    public String startNewMatchApi(Model model) {
+        handleStartNewMatch();
+        return "redirect:/nowmatch";
+    }
+
+    private void handleStartNewMatch() {
         nowMatchInfoService.deleteAll();
         MatchSchedule nextMatch = matchScheduleService.findTopByStatusLessThanOrderByMatchDateTimeAsc(1);
         NowMatchInfo nowMatchInfo = new NowMatchInfo();
@@ -58,9 +69,7 @@ public class NowMatchInfoController {
         nowMatchInfo.setMatchSchedule(nextMatch);
         nowMatchInfoService.save(nowMatchInfo);
         LogUtils.i("new match " + nowMatchInfo.getMatchSchedule().getHomeTeam() + " : " + nowMatchInfo.getMatchSchedule().getAwayTeam());
-        return "redirect:/guoan1992/";
     }
-
 
     @GetMapping(value = "/")
     public String index(Model model) {
@@ -71,7 +80,18 @@ public class NowMatchInfoController {
 
 
     @RequestMapping(value = "/countMatchResult", method = RequestMethod.GET)
-    public String countMatchResult(@RequestParam(value = "id", required = false) Long id) {
+    public String countMatchResult(@RequestParam(value = "id", required = true) Long id) {
+        handleCountGuessResult(id);
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/API/countMatchResult", method = RequestMethod.GET)
+    public String countMatchResultApi(@RequestParam(value = "id", required = true) Long id) {
+        handleCountGuessResult(id);
+        return "redirect:/nowmatch";
+    }
+
+    private void handleCountGuessResult(@RequestParam(value = "id", required = false) Long id) {
         NowMatchInfo nowMatchInfo = nowMatchInfoService.findOne(id);
 
         Long winSum = guessResultService.countByMatchScheduleAndResultType(nowMatchInfo.getMatchSchedule(), GuessResultController.WIN);
@@ -81,8 +101,8 @@ public class NowMatchInfoController {
         nowMatchInfo.setHomeWinNum(winSum.intValue());
         nowMatchInfo.setAwayWinNum(loseSum.intValue());
         nowMatchInfo.setDrawNum(drawSum.intValue());
+        nowMatchInfo.setJoinNum(nowMatchInfo.getDrawNum() + nowMatchInfo.getAwayWinNum() + nowMatchInfo.getHomeWinNum());
         nowMatchInfoService.save(nowMatchInfo);
-        return "redirect:/";
     }
 
 }

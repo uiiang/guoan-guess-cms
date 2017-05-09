@@ -24,6 +24,7 @@ import java.util.List;
  */
 @Controller
 public class GuessResultController {
+    public static final String NONE = "NONE";
     public static final String WIN = "WIN";
     public static final String LOSE = "LOSE";
     public static final String DRAW = "DRAW";

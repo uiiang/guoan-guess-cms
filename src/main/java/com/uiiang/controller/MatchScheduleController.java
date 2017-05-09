@@ -3,6 +3,7 @@ package com.uiiang.controller;
 import com.uiiang.biz.LeagueTeamService;
 import com.uiiang.biz.MatchInfoService;
 import com.uiiang.biz.MatchScheduleService;
+import com.uiiang.entity.JsonWrapper;
 import com.uiiang.entity.LeagueTeam;
 import com.uiiang.entity.MatchInfo;
 import com.uiiang.entity.MatchSchedule;
@@ -35,11 +36,52 @@ public class MatchScheduleController {
         return "matchsche/schedule";
     }
 
+    @GetMapping("/API/schelist")
+    @ResponseBody
+    public JsonWrapper listAllApi() {
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        Iterable<MatchSchedule> all = service.findByOrderByRoundNumDesc();
+        jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+        jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+        jsonWrapper.setData(all);
+        return jsonWrapper;
+    }
+
     @RequestMapping(value = "/createSche", method = RequestMethod.POST)
     public String saveMatch(@ModelAttribute MatchSchedule matchSchedule, Model model) {
-        matchSchedule.setResultType(getResultType(matchSchedule.getHomeResult(), matchSchedule.getAwayResult()));
+        matchSchedule.setResultType(getResultType(matchSchedule.getHomeResult(), matchSchedule.getAwayResult(), matchSchedule.getStatus()));
         service.save(matchSchedule);
         return "redirect:schelist.do";
+    }
+
+    @RequestMapping(value = "/API/createSche", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonWrapper saveMatchApi(@ModelAttribute MatchSchedule matchSchedule) {
+        LogUtils.i("saveMatchApi" + matchSchedule.getHomeTeam() + " " + matchSchedule.getAwayTeam());
+        matchSchedule.setResultType(getResultType(matchSchedule.getHomeResult(), matchSchedule.getAwayResult(), matchSchedule.getStatus()));
+        service.save(matchSchedule);
+
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+        jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+
+        return jsonWrapper;
+    }
+
+    @GetMapping("/API/editsche")
+    @ResponseBody
+    public JsonWrapper toEditMatchScheduleApi(@RequestParam(value = "id", required = false) Long id) {
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        if (id != null && id >= 1) {
+            MatchSchedule matchSchedule = service.findOne(id);
+            jsonWrapper.setData(matchSchedule);
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+        } else {
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_MATCH_SCHEDULE_NOT_FOUND);
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_MATCH_SCHEDULE_NOT_FOUND);
+        }
+        return jsonWrapper;
     }
 
     @GetMapping("/editsche")
@@ -77,16 +119,20 @@ public class MatchScheduleController {
     }
 
 
-    private String getResultType(int homeResult, int awayResult) {
-        String resultType = GuessResultController.WIN;
-        if (homeResult > awayResult) {
-            resultType = GuessResultController.WIN;
-        } else if (homeResult < awayResult) {
-            resultType = GuessResultController.LOSE;
+    private String getResultType(int homeResult, int awayResult, int status) {
+        String resultType = GuessResultController.NONE;
+        if (status < 2) {
+            return resultType;
         } else {
-            resultType = GuessResultController.DRAW;
+            if (homeResult > awayResult) {
+                resultType = GuessResultController.WIN;
+            } else if (homeResult < awayResult) {
+                resultType = GuessResultController.LOSE;
+            } else {
+                resultType = GuessResultController.DRAW;
+            }
+            return resultType;
         }
-        return resultType;
     }
 
 }

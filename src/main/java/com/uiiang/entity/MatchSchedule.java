@@ -26,7 +26,7 @@ public class MatchSchedule {
     private String stadiumName;
     private int homeResult = 0;
     private int awayResult = 0;
-    private String resultType = GuessResultController.DRAW;
+    private String resultType = GuessResultController.NONE;
     private int status = 0;//0,未开始, 1,进行中 2,已结束  3,已计算
 
     public String getResultType() {

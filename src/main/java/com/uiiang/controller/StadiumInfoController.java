@@ -1,6 +1,7 @@
 package com.uiiang.controller;
 
 import com.uiiang.biz.StadiumInfoService;
+import com.uiiang.entity.JsonWrapper;
 import com.uiiang.entity.StadiumInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,5 +41,16 @@ public class StadiumInfoController {
             model.addAttribute("stadiumInfo", new StadiumInfo());
         }
         return "stadium/editstadium";
+    }
+
+
+    @GetMapping("/API/stadiumlist")
+    @ResponseBody
+    public JsonWrapper listAllApi() {
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        jsonWrapper.setData(service.findAll());
+        jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+        jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+        return jsonWrapper;
     }
 }
