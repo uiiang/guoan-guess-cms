@@ -95,6 +95,18 @@ public class PlayerResultController {
     }
 
 
+    @GetMapping("/API/countresult")
+    @ResponseBody
+    public JsonWrapper countPlayerResultApi(@RequestParam(value = "mainfoid", required = false) Long matchInfoId
+            , @RequestParam(value = "mcheId", required = false) Long matchScheduleId) {
+        MatchInfo matchInfo = matchInfoService.findOne(matchInfoId);
+        countGuessResult(matchInfo);
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+        jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+        return jsonWrapper;
+    }
+
     @GetMapping("/countresult")
     public String countPlayerResult(@RequestParam(value = "mainfoid", required = false) Long matchInfoId
             , @RequestParam(value = "mcheId", required = false) Long matchScheduleId) {

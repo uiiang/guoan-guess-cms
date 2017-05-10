@@ -7,6 +7,8 @@ public class ErrorCodeManager {
     public static final int ERROR_CODE_SUCCESS = 0;
     public static final String ERROR_MSG_SUCCESS = "SUCCESS";
 
+    public static final int ERROR_CODE_ERROR = 1;
+    public static final String ERROR_MSG_ERROR = "未知错误";
 
     public static final int ERROR_CODE_GUESS_NOTSTART = 100;//竞猜比赛未开始
     public static final String ERROR_MSG_GUESS_NOTSTART = "竞猜比赛未开始";//竞猜比赛未开始

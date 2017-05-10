@@ -18,6 +18,10 @@ public class GuessResult {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date submitTime;//提交时间
+
+
+    @Transient
+    private String submitTimeStr;
     private int homeResult;//主场进球数
     private int awayResult;//客场进球数
     private String resultType;//胜平负--WIN--DRAW--LOSE
@@ -34,6 +38,14 @@ public class GuessResult {
     @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "MATCH_ID")
     private MatchInfo matchInfo;
+
+    public String getSubmitTimeStr() {
+        return submitTimeStr;
+    }
+
+    public void setSubmitTimeStr(String submitTimeStr) {
+        this.submitTimeStr = submitTimeStr;
+    }
 
     public MatchInfo getMatchInfo() {
         return matchInfo;

@@ -18,6 +18,9 @@ public class MatchSchedule {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date matchDateTime;
+
+    @Transient
+    private String matchDateTimeStr;
     private String matchLevel;
     private String homeTeam;
     private String awayTeam;
@@ -28,6 +31,14 @@ public class MatchSchedule {
     private int awayResult = 0;
     private String resultType = GuessResultController.NONE;
     private int status = 0;//0,未开始, 1,进行中 2,已结束  3,已计算
+
+    public String getMatchDateTimeStr() {
+        return matchDateTimeStr;
+    }
+
+    public void setMatchDateTimeStr(String matchDateTimeStr) {
+        this.matchDateTimeStr = matchDateTimeStr;
+    }
 
     public String getResultType() {
         return resultType;

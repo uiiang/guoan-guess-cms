@@ -29,7 +29,7 @@ public class NowMatchInfoController {
         this.guessResultService = guessResultService;
     }
 
-    @GetMapping("/nowmatch")
+    @GetMapping("/API/nowmatch")
     @ResponseBody
     public JsonWrapper listAll(Model model) {
         Iterable<NowMatchInfo> all = nowMatchInfoService.findAll();
@@ -52,9 +52,13 @@ public class NowMatchInfoController {
     }
 
     @RequestMapping(value = "/API/startnewmatch", method = RequestMethod.GET)
-    public String startNewMatchApi(Model model) {
+    @ResponseBody
+    public JsonWrapper startNewMatchApi(Model model) {
         handleStartNewMatch();
-        return "redirect:/nowmatch";
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+        jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+        return jsonWrapper;
     }
 
     private void handleStartNewMatch() {
@@ -86,9 +90,13 @@ public class NowMatchInfoController {
     }
 
     @RequestMapping(value = "/API/countMatchResult", method = RequestMethod.GET)
-    public String countMatchResultApi(@RequestParam(value = "id", required = true) Long id) {
+    @ResponseBody
+    public JsonWrapper countMatchResultApi(@RequestParam(value = "id", required = true) Long id) {
         handleCountGuessResult(id);
-        return "redirect:/nowmatch";
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+        jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+        return jsonWrapper;
     }
 
     private void handleCountGuessResult(@RequestParam(value = "id", required = false) Long id) {
