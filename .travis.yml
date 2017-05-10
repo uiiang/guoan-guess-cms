@@ -3,3 +3,5 @@ jdk:
 - oraclejdk8
 services:
 - mysql
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS guoan1992;'
