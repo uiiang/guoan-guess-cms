@@ -19,8 +19,6 @@ public class GuessResult {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date submitTime;//提交时间
 
-
-    @Transient
     private String submitTimeStr;
     private int homeResult;//主场进球数
     private int awayResult;//客场进球数

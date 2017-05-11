@@ -18,8 +18,6 @@ public class MatchSchedule {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date matchDateTime;
-
-    @Transient
     private String matchDateTimeStr;
     private String matchLevel;
     private String homeTeam;

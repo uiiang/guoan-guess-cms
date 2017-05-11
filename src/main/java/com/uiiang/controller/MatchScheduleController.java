@@ -7,6 +7,7 @@ import com.uiiang.entity.JsonWrapper;
 import com.uiiang.entity.LeagueTeam;
 import com.uiiang.entity.MatchInfo;
 import com.uiiang.entity.MatchSchedule;
+import com.uiiang.utils.DateUtils;
 import com.uiiang.utils.LogUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,6 +51,7 @@ public class MatchScheduleController {
     @RequestMapping(value = "/createSche", method = RequestMethod.POST)
     public String saveMatch(@ModelAttribute MatchSchedule matchSchedule, Model model) {
         matchSchedule.setResultType(getResultType(matchSchedule.getHomeResult(), matchSchedule.getAwayResult(), matchSchedule.getStatus()));
+        matchSchedule.setMatchDateTimeStr(DateUtils.dateTimeFormat1(matchSchedule.getMatchDateTime()));
         service.save(matchSchedule);
         return "redirect:schelist.do";
     }
@@ -59,6 +61,7 @@ public class MatchScheduleController {
     public JsonWrapper saveMatchApi(@ModelAttribute MatchSchedule matchSchedule) {
         LogUtils.i("saveMatchApi" + matchSchedule.getHomeTeam() + " " + matchSchedule.getAwayTeam());
         matchSchedule.setResultType(getResultType(matchSchedule.getHomeResult(), matchSchedule.getAwayResult(), matchSchedule.getStatus()));
+        matchSchedule.setMatchDateTimeStr(DateUtils.dateTimeFormat1(matchSchedule.getMatchDateTime()));
         service.save(matchSchedule);
 
         JsonWrapper jsonWrapper = new JsonWrapper();

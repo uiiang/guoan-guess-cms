@@ -9,6 +9,7 @@ import com.uiiang.biz.MatchInfoService;
 import com.uiiang.biz.MatchScheduleService;
 import com.uiiang.biz.PlayerInfoService;
 import com.uiiang.entity.*;
+import com.uiiang.utils.DateUtils;
 import com.uiiang.utils.LogUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -99,6 +100,26 @@ public class GuessResultController {
     }
 
 
+    @RequestMapping(value = "/API/getguessreslist", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonWrapper getGuessResultListApi(@RequestParam(value = "id") Long mschid) {
+
+        JsonWrapper jsonWrapper = new JsonWrapper();
+
+        if (mschid > 0) {
+            MatchSchedule matchSchedule = matchScheduleService.findOne(mschid);
+            List<GuessResult> tmpGuessResultList = guessResultService.findByMatchSchedule(matchSchedule);
+            jsonWrapper.setData(tmpGuessResultList);
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+        } else {
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_GUESS_NOT_FOUND);
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_GUESS_NOT_FOUND);
+        }
+
+        return jsonWrapper;
+    }
+
     @RequestMapping(value = "/getplresult", method = RequestMethod.GET)
     @ResponseBody
     public JsonWrapper getPlayerGuessResult(@RequestParam(value = "m") Long mschid
@@ -174,6 +195,7 @@ public class GuessResultController {
                 }
                 guessResult.setMatchInfo(matchInfos.get(0));
                 guessResult.setSubmitTime(new Date());
+                guessResult.setSubmitTimeStr(DateUtils.dateTimeFormat2(new Date()));
                 guessResult.setHomeResult(Integer.valueOf(homegoal));
                 guessResult.setAwayResult(Integer.valueOf(awaygoal));
                 String resultType = getResultType(guessResult);
@@ -209,6 +231,7 @@ public class GuessResultController {
         List<MatchInfo> matchInfos = matchInfoService.findByChineseName(guessResult.getMatchSchedule().getMatchLevel());
         guessResult.setMatchInfo(matchInfos.get(0));
         guessResult.setSubmitTime(new Date());
+        guessResult.setSubmitTimeStr(DateUtils.dateTimeFormat2(new Date()));
         String resultType = getResultType(guessResult);
         guessResult.setResultType(resultType);
         guessResultService.save(guessResult);

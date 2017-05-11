@@ -29,11 +29,8 @@ public class MatchInfo {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date finishDate;
 
-    @Transient
     private String createDateStr;
-    @Transient
     private String startDateStr;
-    @Transient
     private String finishDateStr;
 
     public String getCreateDateStr() {

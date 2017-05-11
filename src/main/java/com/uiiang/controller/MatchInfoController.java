@@ -40,12 +40,6 @@ public class MatchInfoController {
     public JsonWrapper listAll() {
         JsonWrapper jsonWrapper = new JsonWrapper();
         List<MatchInfo> list = matchInfoService.findAllByOrderByStatusAsc();
-        for (MatchInfo matchInfo : list) {
-            matchInfo.setCreateDateStr(matchInfo.getCreateDate() != null ? DateUtils.dateTimeFormat1(matchInfo.getCreateDate()) : "");
-            matchInfo.setFinishDateStr(matchInfo.getFinishDate() != null ? DateUtils.dateTimeFormat1(matchInfo.getFinishDate()) : "");
-            matchInfo.setStartDateStr(matchInfo.getStartDate() != null ? DateUtils.dateTimeFormat1(matchInfo.getStartDate()) : "");
-
-        }
         jsonWrapper.setData(list);
         jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
         jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
@@ -56,6 +50,7 @@ public class MatchInfoController {
     public String saveMatch(@ModelAttribute MatchInfo matchInfo, Model model) {
         if (matchInfo.getCreateDate() == null || matchInfo.getId() < 1) {
             matchInfo.setCreateDate(new Date());
+            matchInfo.setCreateDateStr(DateUtils.dateTimeFormat2(new Date()));
         }
         matchInfoService.save(matchInfo);
         return "redirect:matchlist.do";
@@ -70,6 +65,7 @@ public class MatchInfoController {
             MatchInfo matchInfo = matchInfoService.findOne(id);
             matchInfo.setStatus(MATCH_INFO_STATUS_START);
             matchInfo.setStartDate(new Date());
+            matchInfo.setStartDateStr(DateUtils.dateTimeFormat2(new Date()));
             matchInfoService.save(matchInfo);
 
             jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
@@ -89,6 +85,7 @@ public class MatchInfoController {
             MatchInfo matchInfo = matchInfoService.findOne(id);
             matchInfo.setStatus(MATCH_INFO_STATUS_FINISH);
             matchInfo.setFinishDate(new Date());
+            matchInfo.setFinishDateStr(DateUtils.dateTimeFormat2(new Date()));
             matchInfoService.save(matchInfo);
 
             jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
@@ -107,6 +104,7 @@ public class MatchInfoController {
             MatchInfo matchInfo = matchInfoService.findOne(id);
             matchInfo.setStatus(MATCH_INFO_STATUS_START);
             matchInfo.setStartDate(new Date());
+            matchInfo.setStartDateStr(DateUtils.dateTimeFormat1(new Date()));
             matchInfoService.save(matchInfo);
         }
         return "redirect:matchlist.do";
@@ -119,6 +117,7 @@ public class MatchInfoController {
             MatchInfo matchInfo = matchInfoService.findOne(id);
             matchInfo.setStatus(MATCH_INFO_STATUS_FINISH);
             matchInfo.setFinishDate(new Date());
+            matchInfo.setFinishDateStr(DateUtils.dateTimeFormat1(new Date()));
             matchInfoService.save(matchInfo);
         }
         return "redirect:matchlist.do";
