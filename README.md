@@ -3,7 +3,7 @@
 # 中超比赛竞猜游戏, 后端代码
 
 * 支持球队赛事赛程管理
-* 使用微信小程序登录(https://github.com/uiiang/wx-guoan-guess)
+* 使用[竞猜游戏小程序端](https://github.com/uiiang/wx-guoan-guess)登录
 * 
 
 todo:
