@@ -99,6 +99,27 @@ public class MatchScheduleController {
         return "matchsche/editschedule";
     }
 
+    @GetMapping("/API/deletesche")
+    @ResponseBody
+    public JsonWrapper deleteSchedule(@RequestParam(value = "id") Long id) {
+        JsonWrapper jsonWrapper = new JsonWrapper();
+        if (id != null && id >= 1) {
+            MatchSchedule matchSchedule = service.findOne(id);
+            if (matchSchedule != null) {
+                service.delete(id);
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+            } else {
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_MATCH_SCHEDULE_NOT_FOUND);
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_MATCH_SCHEDULE_NOT_FOUND);
+            }
+        } else {
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_MATCH_SCHEDULE_NOT_FOUND);
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_MATCH_SCHEDULE_NOT_FOUND);
+        }
+        return jsonWrapper;
+    }
+
     @GetMapping("deletesche")
     public String deleteSchedule(@RequestParam(value = "id") Long id, Model model) {
         if (id != null && id >= 1) {
