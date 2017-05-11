@@ -5,16 +5,19 @@ import com.qcloud.weapp.authorization.LoginService;
 import com.qcloud.weapp.authorization.LoginServiceException;
 import com.qcloud.weapp.authorization.UserInfo;
 import com.uiiang.biz.PlayerInfoService;
+import com.uiiang.entity.JsonWrapper;
 import com.uiiang.entity.PlayerInfo;
 import com.uiiang.utils.LogUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by fuliqiang on 2017/5/2.
@@ -53,6 +56,45 @@ public class LoginController {
             LogUtils.ex(e);
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("/API/checkrole")
+    @ResponseBody
+    public JsonWrapper checkRole(HttpServletRequest request, HttpServletResponse response) {
+        LoginService service = new LoginService(request, response);
+        UserInfo userInfo = null;
+        JsonWrapper jsonWrapper = new JsonWrapper();
+//        userInfo = new UserInfo();
+        // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
+        try {
+            userInfo = service.check();
+        } catch (LoginServiceException | ConfigurationException e) {
+            LogUtils.ex(e);
+            e.printStackTrace();
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_INFO_NOT_FOUND);
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_INFO_NOT_FOUND);
+        }
+
+        if (userInfo != null) {
+            List<PlayerInfo> list = crudRepository.findByOpenId(userInfo.getOpenId());
+            if (list != null && list.size() > 0) {
+                PlayerInfo playerInfo = list.get(0);
+                if (playerInfo != null && "admin".equals(playerInfo.getRole())) {
+                    jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_SUCCESS);
+                    jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_SUCCESS);
+                } else {
+                    jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_INFO_NOT_FOUND);
+                    jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_INFO_NOT_FOUND);
+                }
+            } else {
+                jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_INFO_NOT_FOUND);
+                jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_INFO_NOT_FOUND);
+            }
+        } else {
+            jsonWrapper.setMsg(ErrorCodeManager.ERROR_MSG_PLAYER_INFO_NOT_FOUND);
+            jsonWrapper.setCode(ErrorCodeManager.ERROR_CODE_PLAYER_INFO_NOT_FOUND);
+        }
+        return jsonWrapper;
     }
 
 
