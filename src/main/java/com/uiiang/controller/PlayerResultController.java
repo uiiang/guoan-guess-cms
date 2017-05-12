@@ -34,7 +34,7 @@ public class PlayerResultController {
         this.matchInfoService = matchInfoService;
     }
 
-    @RequestMapping(value = "/getplayresult", method = RequestMethod.GET)
+    @RequestMapping(value = "/API/getplayresult", method = RequestMethod.GET)
     @ResponseBody
     public JsonWrapper getPlayerResult(HttpServletRequest request, HttpServletResponse response) {
         LoginService service = new LoginService(request, response);
@@ -70,7 +70,7 @@ public class PlayerResultController {
     }
 
 
-    @GetMapping("/rankinglist")
+    @GetMapping("/API/rankinglist")
     @ResponseBody
     public List<RankingList> listAllJson(@RequestParam(value = "mainfoid", required = false) Long matchInfoId) {
         List<MatchInfo> matchInfos = matchInfoService.findByStatus(MatchInfoController.MATCH_INFO_STATUS_START);

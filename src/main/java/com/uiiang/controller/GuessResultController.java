@@ -49,7 +49,7 @@ public class GuessResultController {
         return "guess/guesslist";
     }
 
-    @GetMapping("/guesspre")
+    @GetMapping("/API/guesspre")
     @ResponseBody
     public GuessResultPreview listGuessPreview(@RequestParam(value = "id", required = false) Long id) {
         GuessResultPreview guessResultPreview = new GuessResultPreview();
@@ -64,7 +64,7 @@ public class GuessResultController {
     }
 
 
-    @RequestMapping(value = "/getplresultlist", method = RequestMethod.GET)
+    @RequestMapping(value = "/API/getplresultlist", method = RequestMethod.GET)
     @ResponseBody
     public JsonWrapper getPlayerGuessResultList(HttpServletRequest request, HttpServletResponse response) {
         LoginService service = new LoginService(request, response);
@@ -158,7 +158,7 @@ public class GuessResultController {
         return jsonWrapper;
     }
 
-    @RequestMapping(value = "/submitguess", method = RequestMethod.POST)
+    @RequestMapping(value = "/API/submitguess", method = RequestMethod.POST)
     @ResponseBody
     public JsonWrapper submitGuess(@RequestParam(value = "m") String matchid
             , @RequestParam(value = "h") String homegoal
@@ -194,8 +194,8 @@ public class GuessResultController {
                     guessResult.setPlayerInfo(playerInfo);
                 }
                 guessResult.setMatchInfo(matchInfos.get(0));
-                guessResult.setSubmitTime(new Date());
-                guessResult.setSubmitTimeStr(DateUtils.dateTimeFormat2(new Date()));
+                guessResult.setSubmitTime(guessResult.getSubmitTime() == null ? new Date() : guessResult.getSubmitTime());
+                guessResult.setSubmitTimeStr(DateUtils.dateTimeFormat2(guessResult.getSubmitTime() == null ? new Date() : guessResult.getSubmitTime()));
                 guessResult.setHomeResult(Integer.valueOf(homegoal));
                 guessResult.setAwayResult(Integer.valueOf(awaygoal));
                 String resultType = getResultType(guessResult);
@@ -230,8 +230,8 @@ public class GuessResultController {
         }
         List<MatchInfo> matchInfos = matchInfoService.findByChineseName(guessResult.getMatchSchedule().getMatchLevel());
         guessResult.setMatchInfo(matchInfos.get(0));
-        guessResult.setSubmitTime(new Date());
-        guessResult.setSubmitTimeStr(DateUtils.dateTimeFormat2(new Date()));
+        guessResult.setSubmitTime(guessResult.getSubmitTime() == null ? new Date() : guessResult.getSubmitTime());
+        guessResult.setSubmitTimeStr(DateUtils.dateTimeFormat2(guessResult.getSubmitTime() == null ? new Date() : guessResult.getSubmitTime()));
         String resultType = getResultType(guessResult);
         guessResult.setResultType(resultType);
         guessResultService.save(guessResult);
